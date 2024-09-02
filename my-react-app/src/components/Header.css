@@ -1,31 +1,35 @@
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #0a52e2;
-    color: white;
-    padding: 10px 20px;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-  }
-  
-  .site-name h1 {
+  display: flex;
+  align-items: center;
+  background-color: #0a52e2;
+  color: white;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.site-name h1 {
     margin: 0;
-  }
-  
-  .login-button button {
-    background-color: #61dafb;
-    border: none;
-    padding: 10px 20px;
-    color: black;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-  }
-  
-  .login-button button:hover {
-    background-color: #21a1f1;
-  }
-  
+}
+
+.login-button button {
+  background-color: #61dafb;
+  border: none;
+  padding: 10px 20px;
+  margin-left: 30px;
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.username h1 {
+  font-size: 16px;
+  margin-left: 1400px;
+}
+
+.login-button button:hover {
+  background-color: #21a1f1;
+}

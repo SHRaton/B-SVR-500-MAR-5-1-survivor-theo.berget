@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Clients from "./pages/Clients";
 import Stats from "./pages/Stats";
+import Login from "./pages/Login";
 import './App.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <div className="content">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/stats" element={<Stats />} />
           </Routes>
