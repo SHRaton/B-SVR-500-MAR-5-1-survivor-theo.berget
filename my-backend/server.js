@@ -17,8 +17,9 @@ const initializeDatabase = () => {
     // Préparer les déclarations pour créer les tables
     db.run('CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL, name TEXT, surname TEXT, birth_date TEXT, gender TEXT, work TEXT)');
     db.run('CREATE TABLE IF NOT EXISTS Customers (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL, name TEXT, surname TEXT, birth_date TEXT, gender TEXT, description TEXT, astrological_sign TEXT)');
-    db.run('CREATE TABLE IF NOT EXISTS Events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, max_participant INTEGER)');
-    db.run('CREATE TABLE IF NOT EXISTS Encounters (id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER, date TEXT, rating INTEGER)');
+    db.run('CREATE TABLE IF NOT EXISTS Events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, max_participant INTEGER, location_x INTEGER, location_y INTEGER, type TEXT, employee_id INTEGER, location_name TEXT)');
+    db.run('CREATE TABLE IF NOT EXISTS Encounters (id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER, date TEXT, rating INTEGER, comment TEXT, source TEXT)');
+    db.run('CREATE TABLE IF NOT EXISTS Tips (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, tip TEXT)');
 };
 
 // Initialiser la base de données
@@ -28,6 +29,7 @@ const baseUrl = 'https://soul-connection.fr/api/employees'; // Base URL pour ré
 const clientUrl = 'https://soul-connection.fr/api/customers/';
 const eventUrl = 'https://soul-connection.fr/api/events/';
 const encounterUrl = 'https://soul-connection.fr/api/encounters/';
+const tipsUrl = 'https://soul-connection.fr/api/tips';
 
 const config = {
     headers: {
@@ -127,9 +129,127 @@ const getAllCustomers = async () => {
     console.log(`Nombre total de clients récupérés: ${customers.length}`);
 };
 
-// Exécution des fonctions
+// Fonction pour insérer un rendez-vous dans la base de données
+const insertEncounterIntoDB = (encounter) => {
+    const { customer_id, date, rating, comment, source } = encounter;
+    const stmt = db.prepare('INSERT INTO Encounters (customer_id, date, rating, comment, source) VALUES (?, ?, ?, ?, ?)');
+    stmt.run(customer_id, date, rating, comment, source, function(err) {
+        if (err) {
+            console.error(`Erreur lors de l'insertion du rendez-vous:`, err.message);
+        } else {
+            console.log(`Rendez-vous avec ID inséré avec succès.`);
+        }
+    });
+    stmt.finalize(); // Finaliser la déclaration préparée
+};
+
+const getEncoutersByID = async (id) => {
+    try {
+        const response = await axios.get(`${encounterUrl}/${id}`, config);
+        return response.data;
+    } catch (error) {
+        console.error(`Erreur lors de la sélection du rendez-vous avec ID ${id}:`, error.response ? error.response.data : error.message);
+        return null;
+    }
+};
+
+const getAllEncouters = async () => {
+    let id = 1;
+    let encounters = [];
+
+    while (true) {
+        const encounter = await getEncoutersByID(id);
+        if (encounter && encounter.id) {
+            encounters.push(encounter);
+            insertEncounterIntoDB(encounter);
+            id++;
+        } else {
+            break; // Sort de la boucle si le rendez-vous n'existe pas
+        }
+    }
+
+    console.log(`Nombre total de rendez-vous créés: ${encounters.length}`);
+};
+
+const insertEventIntoDB = (event) => {
+    const { name, date, max_participant, location_x, location_y, type, employee_id, location_name } = event;
+    const stmt = db.prepare('INSERT INTO Events (name, date, max_participant, location_x, location_y, type, employee_id, location_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+    stmt.run(name, date, max_participant, location_x, location_y, type, employee_id, location_name, function(err) {
+        if (err) {
+            console.error(`Erreur lors de l'insertion de l'event:`, err.message);
+        } else {
+            console.log(`Event avec ID inséré avec ℝ.`);
+        }
+    });
+    stmt.finalize(); // Finaliser la déclaration préparée
+}
+
+const getEventById = async (id) => {
+    try {
+        const response = await axios.get(`${eventUrl}/${id}`, config);
+        return response.data;
+    } catch (error) {
+        console.error(`Erreur lors de la sélection de l'event avec ID ${id}:`, error.response ? error.response.data : error.message);
+        return null;
+    }
+};
+
+const getAllEvents = async () => {
+    let id = 1;
+    let events = [];
+
+    while (true) {
+        const event = await getEventById(id);
+        if (event && event.id) {
+            events.push(event);
+            insertEventIntoDB(event);
+            id++;
+        } else {
+            break; // Sort de la boucle si l'event n'existe pas
+        }
+    }
+
+    console.log(`Nombre total d'events créés: ${events.length}`);
+};
+
+
+const fetchAndInsertTips = async () => {
+    try {
+        const response = await axios.get(`${tipsUrl}`, config); // Remplacez par votre URL
+        const tips = response.data; // Supposons que la réponse soit un tableau d'objets
+
+        for (const tip of tips) {
+            insertTipsIntoDB(tip);
+        }
+
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données:', error.message);
+    }
+};
+
+const insertTipsIntoDB = (tips) => {
+    const { title, tip } = tips;
+
+    const stmt = db.prepare('INSERT INTO Tips (title, tip) VALUES (?, ?)');
+    stmt.run(title, tip, function(err) {
+        if (err) {
+            console.error(`Erreur lors de l'insertion du record avec ID ${this.lastID}:`, err.message);
+        } else {
+            console.log(`Record inséré avec succès, ID ${this.lastID}.`);
+        }
+    });
+    stmt.finalize(); // Finaliser la déclaration préparée
+};
+
+
+
+
+//Exécution des fonctions
 getAllEmployees();
 getAllCustomers();
+getAllEncouters();
+getAllEvents();
+fetchAndInsertTips();
 
 // Démarrer le serveur Express
 app.listen(port, () => {
