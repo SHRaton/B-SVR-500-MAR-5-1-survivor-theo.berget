@@ -143,7 +143,7 @@ const insertCustomerIntoDB = (customer) => {
         }
 
         const stmt = db.prepare('INSERT INTO Customers (email, name, surname, birth_date, gender, description, astrological_sign, phone_number, adress) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        stmt.run(email, name, surname, birth_date, gender, description, astrological_sign, function(err) {
+        stmt.run(email, name, surname, birth_date, gender, description, astrological_sign, phone_number, adress, function(err) {
             if (err) {
                 console.error(`Erreur lors de l'insertion du client:`, err.message);
             } else {
