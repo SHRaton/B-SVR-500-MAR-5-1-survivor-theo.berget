@@ -16,7 +16,7 @@ app.use(express.json()); // Pour traiter le JSON dans les requêtes
 const initializeDatabase = () => {
     // Préparer les déclarations pour créer les tables
     db.run('CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL, name TEXT, surname TEXT, birth_date TEXT, gender TEXT, work TEXT)');
-    db.run('CREATE TABLE IF NOT EXISTS Customers (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL, name TEXT, surname TEXT, birth_date TEXT, gender TEXT, description TEXT, astrological_sign TEXT)');
+    db.run('CREATE TABLE IF NOT EXISTS Customers (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL, name TEXT, surname TEXT, birth_date TEXT, gender TEXT, description TEXT, astrological_sign TEXT, phone_number TEXT, adress TEXT)');
     db.run('CREATE TABLE IF NOT EXISTS Events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, max_participant INTEGER, location_x INTEGER, location_y INTEGER, type TEXT, employee_id INTEGER, location_name TEXT, FOREIGN KEY (employee_id) REFERENCES Users(id))');
     db.run('CREATE TABLE IF NOT EXISTS Encounters (id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER, date TEXT, rating INTEGER, comment TEXT, source TEXT)');
     db.run('CREATE TABLE IF NOT EXISTS Tips (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, tip TEXT)');
@@ -130,7 +130,7 @@ const customerExists = (email, callback) => {
 
 // Fonction pour insérer un client dans la base de données
 const insertCustomerIntoDB = (customer) => {
-    const { email, name, surname, birth_date, gender, description, astrological_sign } = customer;
+    const { email, name, surname, birth_date, gender, description, astrological_sign, phone_number, adress } = customer;
 
     customerExists(email, (err, row) => {
         if (err) {
@@ -142,7 +142,7 @@ const insertCustomerIntoDB = (customer) => {
             return;
         }
 
-        const stmt = db.prepare('INSERT INTO Customers (email, name, surname, birth_date, gender, description, astrological_sign) VALUES (?, ?, ?, ?, ?, ?, ?)');
+        const stmt = db.prepare('INSERT INTO Customers (email, name, surname, birth_date, gender, description, astrological_sign, phone_number, adress) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
         stmt.run(email, name, surname, birth_date, gender, description, astrological_sign, function(err) {
             if (err) {
                 console.error(`Erreur lors de l'insertion du client:`, err.message);
@@ -369,6 +369,24 @@ app.get('/api/tips', (req, res) => {
     });
   });
 
+  app.get('/api/customers', (req, res) => {
+    db.all('SELECT * FROM Customers', [], (err, rows) => {
+      if (err) {
+        res.status(400).json({"error": err.message});
+        return;
+      }
+      res.json({
+        "message": "success",
+        "data": rows
+      });
+    });
+  });
+
+function addEmployee(name, surname, birth_date, gender, work) {
+    const stmt = db.prepare('INSERT INTO Employees (name, surname, birth_date, gender, work) VALUES (?, ?, ?, ?, ?)');
+    const info = stmt.run(name, surname, birth_date, gender, work);
+    return info.lastInsertRowid; // Renvoie l'id de l'employé ajouté
+}
 
 
 //Exécution des fonctions
