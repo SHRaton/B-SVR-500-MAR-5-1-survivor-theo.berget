@@ -1,0 +1,44 @@
+.tips-container {
+    color: rgb(44, 67, 92);
+  padding: 0px;
+}
+
+.tips-list {
+  margin-top: 20px;
+}
+
+.tip-item {
+  margin-bottom: 10px;
+}
+
+.tip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  color: rgb(44, 67, 92);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.tip-title {
+  flex: 1;
+}
+
+.arrow-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+
+.tip-content {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+}

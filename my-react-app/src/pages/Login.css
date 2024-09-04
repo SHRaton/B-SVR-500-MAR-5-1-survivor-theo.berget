@@ -2,13 +2,15 @@
   flex-direction: column;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: top;
+  margin-top: 90px;
   height: 100vh;
   gap: 7px;
 }
 
 .titleContainer {
   display: flex;
+  color: black;
   flex-direction: column;
   font-size: 64px;
   font-weight: bolder;
@@ -54,6 +56,21 @@
   font-size: 12px;
 }
 
+.inputButton {
+    border: none;
+    background: #21a1f1;
+    color: whitesmoke;
+    padding: 12px 24px;
+    margin: 8px;
+    font-size: 24px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.inputButton:hover {
+    background-color: #0a52e2;
+}
+
 .inputBox {
   height: 48px;
   width: 400px;
@@ -66,7 +83,7 @@
 .toggleButton {
   background-color: transparent;
   margin-top: 2px;
-  color: black;
+  color: rgb(15, 15, 15);
   border-color: transparent;
   border-radius: 10px;
 }

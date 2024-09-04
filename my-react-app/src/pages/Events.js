@@ -1,12 +1,12 @@
 import React from "react";
 
-function Stats() {
+function Events() {
   return (
     <div>
-      <h1>Stats Page</h1>
+      <h1>Events Page</h1>
       <p>Statistiques des performances ici.</p>
     </div>
   );
 }
 
-export default Stats;
+export default Events;

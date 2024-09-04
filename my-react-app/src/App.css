@@ -5,7 +5,8 @@
 .content {
   flex: 1;
   padding: 20px;
-  padding-top: 50px;
-  padding-left: 270px;
-  height: 8000px;
+  padding-top: 100px;
+  padding-left: 50px;
+  height: 100vh;
+  background: whitesmoke;
 }

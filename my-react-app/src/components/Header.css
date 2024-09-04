@@ -1,35 +1,112 @@
 .header {
   display: flex;
   align-items: center;
-  background-color: #0a52e2;
-  color: white;
+  justify-content: space-between;
+  background-color: white;
+  color: rgb(44, 67, 92);
   padding: 10px 20px;
   position: fixed;
   top: 0;
   width: 100%;
+  height: 50px; /* Augmenté pour plus de verticalité */
   z-index: 1000;
 }
 
-.site-name h1 {
-    margin: 0;
+/* Alignement de Soul connection à gauche */
+.site-name {
+  font-size: 15px;
+  margin-right: auto;
+  display: flex;
+  align-items: center; /* Centre verticalement le texte */
 }
 
-.login-button button {
-  background-color: #61dafb;
+.site-name h1 {
+  margin: 0;
+}
+
+/* Espacement et centrage des éléments du milieu */
+.middle-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centre verticalement tous les éléments du milieu */
+  flex-grow: 1;
+  font-size: 8px;
+  height: 100%; /* Prend toute la hauteur de la barre de navigation */
+}
+
+.middle-nav div {
+  display: flex;
+  align-items: center; /* Centre verticalement le texte dans chaque bouton */
+  justify-content: center;
+  height: 100%;
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+/* Style par défaut des boutons */
+.middle-nav h1 {
+  margin: 0;
+  font-size: 16px; /* Ajustez la taille si nécessaire */
+  color: rgb(44, 67, 92); /* Couleur par défaut du texte */
+  position: relative; /* Nécessaire pour la pseudo-classe :after */
+}
+
+/* Ajouter la barre sous le texte actif */
+.middle-nav .active h1 {
+  color: rgb(46, 92, 187); /* Couleur bleue pour le texte actif */
+  border-bottom: 3px solid rgb(46, 92, 187); /* Barre sous le texte pour indiquer l'élément actif */
+  padding-top: 25px;
+  padding-bottom: 23px; /* Ajuster l'espacement entre le texte et la barre */
+}
+
+.middle-nav h1:hover {
+  color: #007bff; /* Couleur du texte au survol */
+}
+
+/* Alignement des éléments à droite */
+.right-nav {
+  display: flex;
+  align-items: center;
+  margin-right: 40px;
+  height: 100%;
+}
+
+.login-button {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Styles des boutons avec image de fond */
+.chat, .langue, .login {
+  background-color: rgb(46, 92, 187);
+  background-size: cover; /* Ajuste la taille de l'image pour couvrir tout le bouton */
+  background-position: center; /* Centre l'image dans le bouton */
+  background-repeat: no-repeat;
   border: none;
-  padding: 10px 20px;
-  margin-left: 30px;
-  color: black;
+  padding: 0; /* Enlever le padding pour ne pas déformer l'image */
   cursor: pointer;
   font-size: 16px;
-  border-radius: 5px;
+  border-radius: 50%; /* Arrondi complet pour obtenir un cercle */
+  width: 35px; /* Taille du bouton */
+  height: 35px; /* Taille du bouton */
 }
 
-.username h1 {
-  font-size: 16px;
-  margin-left: 1400px;
+/* Assurez-vous que les images sont correctement définies */
+.chat {
+  border-radius: 0;
+  background-color: transparent;
+  background-image: url('chat.png');
 }
 
-.login-button button:hover {
+.langue {
+  background-image: url('flag.png');
+}
+
+.login {
+  background-image: url('sil.png');
+}
+
+.login:hover {
   background-color: #21a1f1;
 }

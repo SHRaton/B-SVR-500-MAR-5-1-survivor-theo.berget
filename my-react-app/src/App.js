@@ -1,10 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
-import Home from "./pages/Home";
-import Clients from "./pages/Clients";
-import Stats from "./pages/Stats";
+import Dashboard from "./pages/Dashboard";
+import Coaches from "./pages/Coaches";
+import Customers from "./pages/Customers";
+import Tips from "./pages/Tips";
+import Events from "./pages/Events";
 import Login from "./pages/Login";
 import './App.css';
 
@@ -13,13 +14,15 @@ function App() {
     <Router>
       <div className="app">
         <Header />
-        <Sidebar />
         <div className="content">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/clients" element={<Clients />} />
-            <Route path="/stats" element={<Stats />} />
+            <Route path="/coaches" element={<Coaches />} />
+            <Route path="/customers" element={<Customers />} />
+            <Route path="/tips" element={<Tips />} />
+            <Route path="/events" element={<Events />} />
           </Routes>
         </div>
       </div>

@@ -1,0 +1,11 @@
+.dash h1 {
+    color: rgb(44, 67, 92);
+    margin: 0;
+    margin-top: 20px;
+}
+
+.dash p {
+    margin: 0;
+    margin-top: 10px;
+    color: gray;
+}
