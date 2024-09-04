@@ -382,6 +382,21 @@ app.get('/api/tips', (req, res) => {
     });
   });
 
+  app.get('/api/customers/:id', (req, res) => {
+    const id = req.params.id;
+    db.get('SELECT * FROM Customers WHERE id = ?', [id], (err, row) => {
+      if (err) {
+        res.status(400).json({"error": err.message});
+        return;
+      }
+      res.json({
+        "message": "success",
+        "data": row
+      });
+    });
+  });
+
+
 function addEmployee(name, surname, birth_date, gender, work) {
     const stmt = db.prepare('INSERT INTO Employees (name, surname, birth_date, gender, work) VALUES (?, ?, ?, ?, ?)');
     const info = stmt.run(name, surname, birth_date, gender, work);
