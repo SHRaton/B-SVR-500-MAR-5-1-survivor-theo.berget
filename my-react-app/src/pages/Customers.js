@@ -22,9 +22,14 @@ function Customers() {
 
   return (
     <div>
-      <h1 className="titleCustom">Customers List</h1>
+      <div className="top-bar">
+        <h1>Customer List</h1>
+        <div className="addCustom">
+          <div className="export" onClick={() => navigate("/addCustomers")}></div>
+          <div className="add" onClick={() => navigate("/addCustomers")}></div>
+        </div>
+      </div>
         <h2 className="subtitleCustom">You have {nb_customers} customers.</h2>
-
         <ul className='clients'>
           <div className="headerCustom">
             <p>Customers</p>

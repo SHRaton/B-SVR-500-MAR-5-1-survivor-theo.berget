@@ -17,3 +17,102 @@
     background-image: url("./back2.png");
     transform: scale(0.85);
 }
+
+.bloc-principal {
+    display: flex;
+    height: 700px;
+    margin-top: 50px;
+    padding: 10px;
+}
+
+.bloc-principal .photo {
+    border-radius: 5px;
+    border: 2px solid rgb(230, 230, 230);
+}
+
+.bloc-principal .profil {
+    border-radius: 5px;
+    border: 2px solid rgb(230, 230, 230);
+}
+
+.profil {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    height: 100%;
+    background-color: white;
+}
+
+.profil > div {
+    border-radius: 5px; /* Bords arrondis pour les blocs */
+    border: 2px solid rgb(230, 230, 230); /* Bordure des blocs */
+    box-sizing: border-box;
+}
+
+.history {
+    display: flex;
+    height: 80%;
+    width: 100%;
+    margin-left: 50px;
+    background-color: white;
+}
+
+.photo {
+    display: flex;
+    height: 25%;
+    justify-content: center;
+    background-color: white;
+    font-size: 20px;
+}
+
+.icone {
+    display: flex;
+    height: 10%;
+    justify-content: center;
+    font-size: 1.5rem;
+    align-items: center;
+    background-color: white;
+}
+
+.icone i {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.encounters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 20%;
+    background-color: white;
+}
+
+.details {
+    display: flex;
+    height: 45%;
+    background-color: white;
+}
+
+.numbersEncounters {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    align-items: center; /* Centre verticalement les éléments enfants */
+    justify-content: space-around;
+    font-weight: bold;
+}
+
+.textEncounters {
+    display: flex;
+    flex-direction: row; /* Aligne les éléments en ligne */
+    justify-content: center; /* Centre les éléments horizontalement */
+    width: 100%; /* Prend toute la largeur du conteneur parent */
+    text-align: center; /* Centre le texte à l'intérieur des <p> */
+}
+
+.textEncounters p {
+    margin: 0 20px; /* Ajoute un espace entre les éléments si nécessaire */
+    padding: 0; /* Supprime le padding par défaut */
+}

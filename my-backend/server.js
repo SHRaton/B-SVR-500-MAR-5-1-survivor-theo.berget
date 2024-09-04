@@ -397,11 +397,61 @@ app.get('/api/tips', (req, res) => {
   });
 
 
-function addEmployee(name, surname, birth_date, gender, work) {
-    const stmt = db.prepare('INSERT INTO Employees (name, surname, birth_date, gender, work) VALUES (?, ?, ?, ?, ?)');
-    const info = stmt.run(name, surname, birth_date, gender, work);
-    return info.lastInsertRowid; // Renvoie l'id de l'employé ajouté
-}
+app.post('/api/addCustomer', (req, res) => {
+    const { email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address } = req.body;
+
+    const stmt = db.prepare('INSERT INTO Customers (email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    stmt.run(email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address, function(err) {
+        if (err) {
+            console.error("Erreur lors de l'ajout du client:", err);
+            return res.status(500).send("Erreur lors de l'ajout du client");
+        }
+        res.status(200).send({ id: this.lastID });
+    });
+});
+
+app.get('/api/encounters/:customer_id', (req, res) => {
+    const customer_id = req.params.customer_id;
+    db.all('SELECT * FROM Encounters WHERE customer_id = ?', [customer_id], (err, rows) => {
+        if (err) {
+            res.status(400).json({"error": err.message});
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": rows
+        });
+    });
+});
+
+// Give number of encounters with a rating >= 3 with customer_id
+app.get('/api/encounters/rating/:customer_id', (req, res) => {
+    const customer_id = req.params.customer_id;
+    db.all('SELECT * FROM Encounters WHERE customer_id = ? AND rating >= 3', [customer_id], (err, rows) => {
+        if (err) {
+            res.status(400).json({"error": err.message});
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": rows
+        });
+    });
+});
+
+app.get('/api/encounters/not-pass/:customer_id', (req, res) => {
+    const customer_id = req.params.customer_id;
+    db.all('SELECT * FROM Encounters WHERE customer_id = ? AND date > DATE("now")', [customer_id], (err, rows) => {
+        if (err) {
+            res.status(400).json({"error": err.message});
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": rows
+        });
+    });
+});
 
 
 //Exécution des fonctions

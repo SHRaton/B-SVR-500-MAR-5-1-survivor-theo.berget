@@ -7,6 +7,9 @@
   padding: 20px;
   padding-top: 100px;
   padding-left: 30px;
-  height: 100vh;
   background: whitesmoke;
+}
+
+body {
+  background-color: whitesmoke;
 }

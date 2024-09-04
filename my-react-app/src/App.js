@@ -8,6 +8,7 @@ import Tips from "./pages/Tips";
 import Events from "./pages/Events";
 import Login from "./pages/Login";
 import ClientDetails from "./pages/ClientDetails";
+import AddCustomers from "./pages/addCustomers";
 import './App.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/coaches" element={<Coaches />} />
             <Route path="/customers" element={<Customers />} />
+            <Route path="/AddCustomers" element={<AddCustomers /> }/>
             <Route path="/tips" element={<Tips />} />
             <Route path="/events" element={<Events />} />
             <Route path="/customers/:id" element={<ClientDetails />} />
