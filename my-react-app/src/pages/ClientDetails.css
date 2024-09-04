@@ -1,0 +1,19 @@
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px;
+}
+
+.back {
+    height: 50px;
+    width: 133px;
+    background-image: url("./back.png");
+    background-size: cover;
+    transition: transform 0.3s;
+}
+
+.back:hover {
+    background-image: url("./back2.png");
+    transform: scale(0.85);
+}

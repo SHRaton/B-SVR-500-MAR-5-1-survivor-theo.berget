@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
 import './Tips.css'; // Assurez-vous que le CSS est correctement importé
 
 // Import des images pour les flèches
@@ -7,23 +7,25 @@ import arrowUp from './up.png';
 
 function Tips() {
   const [openIndex, setOpenIndex] = useState(null);
+  const [tips, setTips] = useState([]);
 
   const toggleDropdown = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const tipsData = [
-    { title: "Tip 1", text: "Test1" },
-    { title: "Tip 2", text: "Test2" },
-    { title: "Tip 3", text: "Test3" }
-  ];
+  // Utilisation de useEffect pour récupérer les tips depuis le backend
+  useEffect(() => {
+    fetch('http://localhost:5000/api/tips')
+      .then(response => response.json())
+      .then(data => setTips(data.data.slice(0, 5)))
+      .catch(error => console.error('Error fetching tips:', error));
+  }, []);
 
   return (
     <div className="tips-container">
-      <h1>Tips Page</h1>
-      <p>Statistiques des performances ici.</p>
+      <h1 className="title">Tips for Coaches</h1>
       <div className="tips-list">
-        {tipsData.map((tip, index) => (
+        {tips.map((tip, index) => (
           <div key={index} className="tip-item">
             <div 
               className="tip-header"
@@ -38,7 +40,7 @@ function Tips() {
             </div>
             {openIndex === index && (
               <div className="tip-content">
-                <p>{tip.text}</p>
+                <p>{tip.tip}</p>
               </div>
             )}
           </div>

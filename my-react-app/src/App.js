@@ -7,6 +7,7 @@ import Customers from "./pages/Customers";
 import Tips from "./pages/Tips";
 import Events from "./pages/Events";
 import Login from "./pages/Login";
+import ClientDetails from "./pages/ClientDetails";
 import './App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/customers" element={<Customers />} />
             <Route path="/tips" element={<Tips />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/customers/:id" element={<ClientDetails />} />
           </Routes>
         </div>
       </div>

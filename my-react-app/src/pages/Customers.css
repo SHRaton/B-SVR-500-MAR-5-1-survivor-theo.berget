@@ -1,0 +1,60 @@
+.titleCustom {
+    color: rgb(44, 67, 92);
+}
+
+.subtitleCustom {
+    font-size: 15px;
+    color: rgb(99, 119, 145);
+    margin-bottom: 50px;
+}
+
+.clients {
+  list-style-type: none; /* Supprime les puces */
+  padding-left: 0; /* Supprime le retrait à gauche */
+  margin-top: 10px;
+  padding-right: 80px;
+  margin-bottom: 10px;
+  color: rgb(99, 119, 145);
+}
+
+.clients div {
+  padding: 15px; /* Optionnel : ajoutez un peu de padding pour l'espacement */
+  cursor: pointer;
+  background-color: white;
+  border: 3px solid rgb(230, 230, 230);
+}
+
+.bloc:hover {
+    background-color: whitesmoke;
+}
+
+.bloc {
+  display: flex;
+  justify-content: space-between; /* Sépare les éléments en laissant de l'espace */
+  width: 100%; /* Assurez-vous que le bloc prend toute la largeur */
+}
+
+.bloc p {
+  flex: 1; /* Chaque <p> prendra une part égale de l'espace disponible */
+  display: flex; /* Active flexbox pour les éléments enfants (le texte ici) */
+  align-items: center; /* Centre verticalement le contenu */
+  justify-content: center; /* Centre horizontalement le contenu */
+  margin: 0 10px; /* Ajoute de l'espace entre les éléments */
+  text-align: center; /* Centre le texte à l'intérieur de chaque <p> */
+}
+
+.headerCustom {
+  display: flex;
+  justify-content: space-between; /* Sépare les éléments en laissant de l'espace */
+  width: 100%; /* Assurez-vous que le bloc prend toute la largeur */
+  color: black;
+}
+
+.headerCustom p {
+  flex: 1; /* Chaque <p> prendra une part égale de l'espace disponible */
+  display: flex; /* Active flexbox pour les éléments enfants (le texte ici) */
+  align-items: center; /* Centre verticalement le contenu */
+  justify-content: center; /* Centre horizontalement le contenu */
+  margin: 0 10px; /* Ajoute de l'espace entre les éléments */
+  text-align: center; /* Centre le texte à l'intérieur de chaque <p> */
+}
