@@ -20,6 +20,7 @@ const initializeDatabase = () => {
     db.run('CREATE TABLE IF NOT EXISTS Events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, max_participant INTEGER, location_x INTEGER, location_y INTEGER, type TEXT, employee_id INTEGER, location_name TEXT, FOREIGN KEY (employee_id) REFERENCES Users(id))');
     db.run('CREATE TABLE IF NOT EXISTS Encounters (id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER, date TEXT, rating INTEGER, comment TEXT, source TEXT)');
     db.run('CREATE TABLE IF NOT EXISTS Tips (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, tip TEXT)');
+    db.run('CREATE TABLE IF NOT EXISTS Clothes (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, customer_id INTEGER, FOREIGN KEY (customer_id) REFERENCES Customers(id))');
 };
 
 // Initialiser la base de données
@@ -79,8 +80,6 @@ const insertEmployeeIntoDB = (employee) => {
         stmt.run(email, name, surname, birth_date, gender, work, function(err) {
             if (err) {
                 console.error(`Erreur lors de l'insertion de l'employé:`, err.message);
-            } else {
-                console.log(`Employé avec ID inséré avec succès.`);
             }
         });
         stmt.finalize(); // Finaliser la déclaration préparée
@@ -146,8 +145,6 @@ const insertCustomerIntoDB = (customer) => {
         stmt.run(email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address, function(err) {
             if (err) {
                 console.error(`Erreur lors de l'insertion du client:`, err.message);
-            } else {
-                console.log(`Client avec ID inséré avec succès.`);
             }
         });
         stmt.finalize(); // Finaliser la déclaration préparée
@@ -169,7 +166,6 @@ const getAllCustomers = async () => {
             break; // Sort de la boucle si le client n'existe pas
         }
     }
-
     console.log(`Nombre total de clients récupérés: ${customers.length}`);
 };
 
@@ -203,8 +199,6 @@ const insertEncounterIntoDB = (encounter) => {
         stmt.run(customer_id, date, rating, comment, source, function(err) {
             if (err) {
                 console.error(`Erreur lors de l'insertion du rendez-vous:`, err.message);
-            } else {
-                console.log(`Rendez-vous avec ID inséré avec succès.`);
             }
         });
         stmt.finalize(); // Finaliser la déclaration préparée
@@ -268,8 +262,6 @@ const insertEventIntoDB = (event) => {
         stmt.run(name, date, max_participant, location_x, location_y, type, employee_id, location_name, function(err) {
             if (err) {
                 console.error(`Erreur lors de l'insertion de l'event:`, err.message);
-            } else {
-                console.log(`Event avec ID inséré avec ℝ.`);
             }
         });
         stmt.finalize(); // Finaliser la déclaration préparée
@@ -355,6 +347,46 @@ const insertTipsIntoDB = (tips) => {
     });
 };
 
+async function processAllCustomers() {
+    // Récupérer tous les clients dans la base de données
+    db.all(`SELECT id FROM Customers`, [], (err, customers) => {
+      if (err) {
+        console.error("Erreur lors de la récupération des clients :", err.message);
+        return;
+      }
+      // Boucle à travers chaque client
+      customers.forEach((customer) => {
+        const customerId = customer.id;
+        console.log(`Traitement des vêtements pour le client ${customerId}`);
+        // Appeler la fonction qui récupère et insère les vêtements pour ce client
+        fetchAndInsertClothes(customerId);
+      });
+    });
+  }
+
+  async function fetchAndInsertClothes(customerId) {
+    try {
+      // Utilisation du config avec axios.get pour inclure les headers
+      const response = await axios.get(`https://soul-connection.fr/api/customers/${customerId}/clothes`, config);
+      const clothesList = response.data; // Supposons que la réponse est un tableau d'objets
+      // Boucle sur la liste des vêtements et insertion dans la table Clothes
+      clothesList.forEach((clothingItem) => {
+        const { type } = clothingItem;
+        db.run(
+          `INSERT INTO Clothes (Type, customer_id) VALUES (?, ?)`,
+          [type, customerId],
+          function (err) {
+            if (err) {
+              return console.error(err.message);
+            }
+            console.log(`Vêtement inséré pour le client ${customerId}`);
+          }
+        );
+      });
+    } catch (error) {
+      console.error(`Erreur lors de la récupération des vêtements pour le client ${customerId}:`, error);
+    }
+  }
 
 ////////////////////////////////////////////////////////////////// CONTRONLLERS ////////////////////////////////////////////////////////////////////////////
 
@@ -504,12 +536,71 @@ app.post('/api/addUser', (req, res) => {
     });
 });
 
+// Delete customer || DELETE METHOD
+app.delete('/api/deleteCustomer/:id', (req, res) => {
+    const id = req.params.id;
+
+    db.run('DELETE FROM Customers WHERE id = ?', [id], function(err) {
+        if (err) {
+            console.error("Erreur lors de la suppression du client:", err);
+            return res.status(500).send("Erreur lors de la suppression du client");
+        }
+        res.status(200).send({ id: this.lastID });
+    });
+});
+
+// Delete user || DELETE METHOD
+app.delete('/api/deleteUser/:id', (req, res) => {
+    const id = req.params.id;
+
+    db.run('DELETE FROM Users WHERE id = ?', [id], function(err) {
+        if (err) {
+            console.error("Erreur lors de la suppression de l'utilisateur:", err);
+            return res.status(500).send("Erreur lors de la suppression de l'utilisateur");
+        }
+        res.status(200).send({ id: this.lastID });
+    });
+});
+
+// Fonction pour récupérer les vêtements et les insérer dans la base de données
+async function fetchAndInsertClothes(customerId) {
+    try {
+      // Requête HTTP vers l'API pour obtenir les vêtements du client
+      const response = await axios.get(`https://soul-connection.fr/api/customers/${customerId}/clothes`, config);
+      const clothesList = response.data; // Supposons que la réponse est un tableau d'objets
+
+      // Boucle sur la liste des vêtements et insertion dans la table Clothes
+      clothesList.forEach((clothingItem) => {
+        const { id, type } = clothingItem;
+
+        // Insertion dans la table Clothes
+        db.run(
+          `INSERT INTO Clothes (id, Type, customer_id) VALUES (?, ?, ?)`,
+          [id, type, customerId],
+          function (err) {
+            if (err) {
+              return console.error(err.message);
+            }
+            console.log(`Vêtement inséré avec id: ${this.lastID}`);
+          }
+        );
+      });
+    } catch (error) {
+      console.error('Erreur lors de la récupération des vêtements :', error);
+    }
+  }
+
 //Exécution des fonctions
-getAllEmployees();
-getAllCustomers();
-getAllEncouters();
-getAllEvents();
-fetchAndInsertTips();
+const populateData = async () => {
+    await getAllEmployees();
+    await getAllCustomers();
+    await getAllEncouters();
+    await getAllEvents();
+    await fetchAndInsertTips();
+    await processAllCustomers();
+}
+
+populateData();
 
 // Démarrer le serveur Express
 app.listen(port, () => {
