@@ -73,3 +73,9 @@
   height: 30px;
   margin-left: 10px;
 }
+
+.percentage {
+  font-size: 24px; /* Augmente la taille de la police */
+  font-weight: bold; /* Rend le texte en gras */
+  color: #007bff; /* Vous pouvez changer la couleur si vous le souhaitez */
+}

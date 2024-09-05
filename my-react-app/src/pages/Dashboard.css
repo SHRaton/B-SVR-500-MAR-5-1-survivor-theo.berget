@@ -9,3 +9,51 @@
     margin-top: 10px;
     color: gray;
 }
+
+.dashBloc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: aqua;
+    width: 100%;
+    height: 1000px;
+    padding: 30px;
+}
+
+.blocTop {
+    display: flex;
+    margin: 10px;
+    width: 50%;
+    height: 100%;
+}
+
+.bloc1 {
+    background-color: aquamarine;
+    width: 50%;
+    height: 100%;
+}
+
+.bloc2 {
+    background-color: red;
+    width: 50%;
+    height: 100%;
+}
+
+.blocBot {
+    display: flex;
+    margin: 10px;
+    width: 50%;
+    height: 100%;
+}
+
+.bloc3 {
+    background-color: darkblue;
+    width: 50%;
+    height: 100%;
+}
+.bloc4 {
+    background-color: brown;
+    width: 50%;
+    height: 100%;
+}

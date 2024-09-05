@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
+
+import './addCustomers.css';
 
 const UserForm = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +15,8 @@ const UserForm = () => {
     astrological_sign: '',
     description: ''
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -70,7 +75,7 @@ const UserForm = () => {
       </select>
       <input type="text" name="astrological_sign" placeholder="Astrological Sign" value={formData.astrological_sign} onChange={handleChange} required />
       <textarea name="description" placeholder="Description" value={formData.description} onChange={handleChange} required></textarea>
-      <button type="submit">Submit</button>
+      <button type="submit" onClick={() => navigate("/customers")}>Submit</button>
     </form>
   );
 };

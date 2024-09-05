@@ -55,14 +55,34 @@
     width: 100%;
     margin-left: 50px;
     background-color: white;
+    border-radius: 5px;
+    border: 2px solid rgb(230, 230, 230);
 }
+
 
 .photo {
     display: flex;
     height: 25%;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     background-color: white;
     font-size: 20px;
+}
+
+.photo p {
+    margin: 0;
+}
+
+.photoCadre {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin-bottom: 20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    border: 2px solid rgb(230, 230, 230);
 }
 
 .icone {
@@ -83,36 +103,128 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: raw;
     height: 20%;
     background-color: white;
+    color: rgb(44, 67, 92);
 }
 
 .details {
     display: flex;
     height: 45%;
+    flex-direction: column;
     background-color: white;
+    color: rgb(44, 67, 92);
+    padding: 30px;
 }
 
-.numbersEncounters {
-    display: flex;
-    width: 100%;
-    height: 40px;
+.SD {
+    font-weight: bold;
     font-size: 20px;
-    align-items: center; /* Centre verticalement les éléments enfants */
-    justify-content: space-around;
+    margin: 0;
+}
+
+.infoSD {
+    margin-top: 30px;
+}
+
+.titleSD {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.subtitleSD {
+    color: black;
+    margin: 0;
+    margin-top: 5px;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 33%;
+}
+
+.middle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 33%;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 33%;
+}
+
+.numberBIG {
+    font-size: 30px;
+    margin: 0;
     font-weight: bold;
 }
 
-.textEncounters {
+.clothes {
     display: flex;
-    flex-direction: row; /* Aligne les éléments en ligne */
-    justify-content: center; /* Centre les éléments horizontalement */
-    width: 100%; /* Prend toute la largeur du conteneur parent */
-    text-align: center; /* Centre le texte à l'intérieur des <p> */
+    height: 1000px;
+    margin-top: 100px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    border: 2px solid rgb(230, 230, 230);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-.textEncounters p {
-    margin: 0 20px; /* Ajoute un espace entre les éléments si nécessaire */
-    padding: 0; /* Supprime le padding par défaut */
+.midBox {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    height: 100%;
+}
+
+.midBox div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.midBox1 {
+    height: 25%;
+}
+.midBox2 {
+    height: 25%;
+}
+.midBox3 {
+    height: 25%;
+}
+.midBox4 {
+    height: 25%;
+}
+
+.photoBox {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 70%;
+    height: 99%;
+}
+
+.titleClothes {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }

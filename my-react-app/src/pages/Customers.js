@@ -25,8 +25,13 @@ function Customers() {
       <div className="top-bar">
         <h1>Customer List</h1>
         <div className="addCustom">
-          <div className="export" onClick={() => navigate("/addCustomers")}></div>
-          <div className="add" onClick={() => navigate("/addCustomers")}></div>
+          <div className="export" onClick={() => navigate("/addCustomers")}>
+            <i className="pi pi-cloud-download"></i>
+            <p>Export</p>
+          </div>
+          <div className="add" onClick={() => navigate("/addCustomers")}>
+            <i className="pi pi-plus"></i>
+          </div>
         </div>
       </div>
         <h2 className="subtitleCustom">You have {nb_customers} customers.</h2>
