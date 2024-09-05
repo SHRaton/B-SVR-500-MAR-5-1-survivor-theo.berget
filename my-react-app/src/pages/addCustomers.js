@@ -77,7 +77,7 @@ const UserForm = () => {
       </select>
       <input type="text" name="astrological_sign" placeholder="Astrological Sign" value={formData.astrological_sign} onChange={handleChange} required />
       <textarea name="description" placeholder="Description" value={formData.description} onChange={handleChange} required></textarea>
-      <button type="submit">Submit</button>
+      <button className='buttonForm' type="submit">Submit</button>
     </form>
   );
 };

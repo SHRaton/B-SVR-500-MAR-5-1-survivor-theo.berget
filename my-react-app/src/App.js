@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import Coaches from "./pages/Coaches";
+import CoacheDetails from "./pages/CoacheDetails";
 import Customers from "./pages/Customers";
 import Tips from "./pages/Tips";
 import Events from "./pages/Events";
@@ -24,12 +25,13 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/coaches" element={<Coaches />} />
+            <Route path="/coaches/:id" element={<CoacheDetails />} />
             <Route path="/customers" element={<Customers />} />
+            <Route path="/customers/:id" element={<ClientDetails />} />
             <Route path="/AddCustomers" element={<AddCustomers /> }/>
             <Route path="/tips" element={<Tips />} />
             <Route path="/events" element={<Events />} />
             <Route path="/astro" element={<Astro />} />
-            <Route path="/customers/:id" element={<ClientDetails />} />
             <Route path="/result" element={<ResultPage />} />
           </Routes>
         </div>

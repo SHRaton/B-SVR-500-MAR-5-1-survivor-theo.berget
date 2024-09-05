@@ -8,30 +8,41 @@
   margin-bottom: 50px;
 }
 
+.mainCustom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .clients {
-  list-style-type: none; /* Supprime les puces */
-  padding-left: 0; /* Supprime le retrait à gauche */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 96%;
   margin-top: 10px;
-  padding-right: 80px;
   margin-bottom: 10px;
   color: rgb(99, 119, 145);
+  padding: 15px; /* Optionnel : ajoutez un peu de padding pour l'espacement */
 }
 
 .clients div {
-  padding: 15px; /* Optionnel : ajoutez un peu de padding pour l'espacement */
   cursor: pointer;
   background-color: white;
-  border: 3px solid rgb(230, 230, 230);
 }
 
-.bloc:hover {
-  background-color: whitesmoke;
+.blocMain {
+  display: flex;
+  width: 100%;
 }
 
 .bloc {
   display: flex;
-  justify-content: space-between; /* Sépare les éléments en laissant de l'espace */
   width: 100%; /* Assurez-vous que le bloc prend toute la largeur */
+  border: 1px dashed rgb(230, 230, 230);
+}
+.bloc:hover {
+  background-color: whitesmoke;
 }
 
 .bloc p {
@@ -39,26 +50,49 @@
   display: flex; /* Active flexbox pour les éléments enfants (le texte ici) */
   align-items: center; /* Centre verticalement le contenu */
   justify-content: center; /* Centre horizontalement le contenu */
-  margin: 0 10px; /* Ajoute de l'espace entre les éléments */
   text-align: center; /* Centre le texte à l'intérieur de chaque <p> */
 }
 
-.headerCustom {
+.last {
+  text-align: center;
+  width: 70px;
+  border: 1px dashed rgb(230, 230, 230);
+}
+.last:hover {
+  background-color: whitesmoke;
+}
+
+.lastTitle {
   display: flex;
-  justify-content: space-between; /* Sépare les éléments en laissant de l'espace */
-  width: 100%; /* Assurez-vous que le bloc prend toute la largeur */
-  height: 10px;
-  font-size: 15px;
+  text-align: center;
+  justify-content: center;
+  width: 70px;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
   color: black;
 }
 
-.headerCustom p {
-  flex: 1; /* Chaque <p> prendra une part égale de l'espace disponible */
-  display: flex; /* Active flexbox pour les éléments enfants (le texte ici) */
-  align-items: center; /* Centre verticalement le contenu */
-  justify-content: center; /* Centre horizontalement le contenu */
-  margin: 0 10px; /* Ajoute de l'espace entre les éléments */
-  text-align: center; /* Centre le texte à l'intérieur de chaque <p> */
+.headerCustom1 {
+  display: flex;
+  width: 100%;
+}
+
+.headerCustom2 {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  display: flex;
+  width: 100%;
+  color: black;
+}
+
+.headerCustom2 p {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  text-align: center;
 }
 
 .top-bar {
@@ -113,4 +147,26 @@
 .add i {
   color: white;
   font-size: 26px; /* Agrandit l'icône */
+}
+
+.menu {
+  position: absolute;
+  background-color: white;
+  border: 1px solid rgb(230, 230, 230);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  right: 0;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.menu p {
+  margin: 0;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: black;
+}
+
+.menu p:hover {
+  background-color: rgb(245, 245, 245);
 }

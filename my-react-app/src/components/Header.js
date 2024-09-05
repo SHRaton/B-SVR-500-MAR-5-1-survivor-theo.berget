@@ -16,7 +16,7 @@ function Header({ isLoggedIn, toggleLogin }) {
 
   // Fonction pour vérifier si le chemin actuel correspond à celui passé en paramètre
   const isActive = (path) => location.pathname === path;
-  const isActiveCustomers = (path) => location.pathname.startsWith(path);
+  const isActiveCustomers = (path) => location.pathname.startsWith(path) || location.pathname === "/addCustomers";
 
   return (
     <div className="header">

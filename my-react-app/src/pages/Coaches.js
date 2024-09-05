@@ -1,54 +1,53 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import './Coaches.css';
 
-
 function Coaches() {
-  const { id } = useParams(); // Récupère l'ID du client depuis l'URL
-  const [users, setUsers] = useState([]);
+  const [coaches, setCoaches] = useState([]);
   const navigate = useNavigate();
 
-
   useEffect(() => {
-    fetch(`http://localhost:5000/api/users/`)
+    fetch('http://localhost:5000/api/users')
       .then(response => response.json())
-      .then(data => setUsers(data.data))
+      .then(data => setCoaches(data.data))
       .catch(error => console.error('Error fetching users:', error));
-  }, [id]);
+  }, []);
 
-  const handleClientClick = (clientId) => {
-    navigate(`/customers/${clientId}`);
+  const handleCoachesClick = (coachId) => {
+    navigate(`/coaches/${coachId}`);
   };
 
-  const nb_coaches = users.length;
+  const nb_coaches = coaches.length;
 
   return (
-    <div>
+    <div className='mainCustom'>
       <div className="top-bar">
         <h1>Coaches List</h1>
-        <div className="addCustom">
-          <div className="export" onClick={() => navigate("/addCustomers")}></div>
-          <div className="add" onClick={() => navigate("/addCustomers")}></div>
-        </div>
       </div>
         <h2 className="subtitleCustom">You have {nb_coaches} coaches.</h2>
         <ul className='clients'>
-          <div className="headerCustom">
-            <p>Customers</p>
-            <p>Email</p>
-            <p>Actions</p>
+          <div className='headerCustom1'>
+            <div className="headerCustom2">
+              <p>Cocahes</p>
+              <p>Email</p>
+            </div>
+            <div className='lastTitle'>
+              <p>Actions</p>
+            </div>
           </div>
-          {users.map(user => (
-            <div key={user.id} onClick={() => handleClientClick(user.id)} className="bloc">
-              <p>
-                {user.name} {user.surname}
-              </p>
-              <p>
-                {user.email}
-              </p>
-              <p>
-                ...
-              </p>
+          {coaches.map(coache => (
+            <div className="blocMain">
+              <div key={coache.id} onClick={() => handleCoachesClick(coache.id)} className="bloc">
+                <p>
+                  {coache.name} {coache.surname}
+                </p>
+                <p>
+                  {coache.email}
+                </p>
+              </div>
+              <div className='last'>
+                <p>...</p>
+              </div>
             </div>
           ))}
         </ul>
