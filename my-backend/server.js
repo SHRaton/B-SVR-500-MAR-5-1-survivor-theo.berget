@@ -732,6 +732,20 @@ app.post('/api/addCustomer', (req, res) => {
     });
 });
 
+// Add new coach || POST METHOD
+app.post('/api/addCoach', (req, res) => {
+    const { email, name, surname, birth_date, gender, work } = req.body;
+
+    const stmt = db.prepare('INSERT INTO Users (email, name, surname, birth_date, gender, work) VALUES (?, ?, ?, ?, ?, ?)');
+    stmt.run(email, name, surname, birth_date, gender, work, function(err) {
+        if (err) {
+            console.error("Erreur lors de l'ajout du coach:", err);
+            return res.status(500).send("Erreur lors de l'ajout du coach");
+        }
+        res.status(200).send({ id: this.lastID });
+    });
+});
+
 // Add new user || POST METHOD
 app.post('/api/addUser', (req, res) => {
     const { email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address } = req.body;
@@ -792,6 +806,21 @@ app.get('/api/customersByCoach/:id', (req, res) => {
         });
     });
 });
+
+app.put('/api/customersEdit/:id', async (req, res) => {
+    const customerId = req.params.id;
+    const customerData = req.body; // Contient les informations du client
+  
+    try {
+      // Mise à jour du client dans la base de données
+      await db.query('UPDATE customers SET ? WHERE id = ?', [customerData, customerId]);
+      res.status(200).send({ message: 'Client mis à jour avec succès' });
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du client', error);
+      res.status(500).send({ message: 'Erreur serveur' });
+    }
+  });
+  
 
 // Delete customer || DELETE METHOD
 app.delete('/api/deleteCustomer/:id', (req, res) => {
