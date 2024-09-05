@@ -16,6 +16,7 @@ function Header({ isLoggedIn, toggleLogin }) {
 
   // Fonction pour vérifier si le chemin actuel correspond à celui passé en paramètre
   const isActive = (path) => location.pathname === path;
+  const isActiveCoaches = (path) => location.pathname.startsWith(path);
   const isActiveCustomers = (path) => location.pathname.startsWith(path) || location.pathname === "/addCustomers";
 
   return (
@@ -34,7 +35,7 @@ function Header({ isLoggedIn, toggleLogin }) {
           <h1>Dashboard</h1>
         </div>
         <div
-          className={`coaches ${isActive("/coaches") ? "active" : ""}`}
+          className={`coaches ${isActiveCoaches("/coaches") ? "active" : ""}`}
           onClick={() => navigate("/coaches")}
         >
           <h1>Coaches</h1>

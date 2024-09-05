@@ -13,6 +13,9 @@ import AddCustomers from "./pages/addCustomers";
 import Astro from "./pages/Astro"
 import ResultPage from './pages/ResultPage'
 import CoachAssign from "./pages/CoachAssign"
+import AddCoaches from "./pages/AddCoaches"
+import EditCustomers from "./pages/EditCustomers"
+
 import './App.css';
 
 function App() {
@@ -34,6 +37,8 @@ function App() {
             <Route path="/tips" element={<Tips />} />
             <Route path="/events" element={<Events />} />
             <Route path="/astro" element={<Astro />} />
+            <Route path="/AddCoaches" element={<AddCoaches />} />
+            <Route path="/customers/:id/edit" element={<EditCustomers />} />
             <Route path="/result" element={<ResultPage />} />
           </Routes>
         </div>

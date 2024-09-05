@@ -13,6 +13,7 @@ function CoacheDetails() {
   const [hat_cap, setHatCap] = useState([]);
   const [bottom, setBottom] = useState([]);
   const [shoes, setShoes] = useState([]);
+  const [nbCustomers, setNbCustomers] = useState([]);
 
   // État pour suivre l'index actif de chaque type de vêtement
   const [hatCapIndex, setHatCapIndex] = useState(0);
@@ -78,6 +79,13 @@ function CoacheDetails() {
       .catch(error => console.error('Error fetching shoes clothes:', error));
   }, [id]);
 
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/customersByCoach/${id}`)
+      .then(response => response.json())
+      .then(data => setNbCustomers(data.data))
+      .catch(error => console.error('Error fetching shoes clothes:', error));
+  }, [id]);
+
   if (!coaches) {
     return <div>Loading...</div>;
   }
@@ -128,16 +136,8 @@ function CoacheDetails() {
           </div>
           <div className="encounters">
             <div className="left">
-              <p className="numberBIG"> {encounters.length}</p>
-              <p>Total Encounters</p>
-            </div>
-            <div className="middle">
-              <p className="numberBIG"> {ratings.length}</p>
-              <p>Positives</p>
-            </div>
-            <div className="right">
-              <p className="numberBIG"> {incomings.length}</p>
-              <p>In Progress</p>
+              <p className="numberBIG">{nbCustomers.length}</p>
+              <p>Total customers</p>
             </div>
           </div>
           <div className="details">

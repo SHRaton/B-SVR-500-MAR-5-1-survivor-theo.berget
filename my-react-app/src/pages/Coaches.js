@@ -32,6 +32,15 @@ function Coaches() {
     <div className='mainCustom'>
       <div className="top-bar">
         <h1>Coaches List</h1>
+        <div className="addCustom">
+          <div className="export" onClick={() => navigate("/addCoaches")}>
+            <i className="pi pi-cloud-download"></i>
+            <p>Export</p>
+          </div>
+          <div className="add" onClick={() => navigate("/addCoaches")}>
+            <i className="pi pi-plus"></i>
+          </div>
+        </div>
       </div>
         <h2 className="subtitleCustom">You have {nb_coaches} coaches.</h2>
         <ul className='clients'>
