@@ -12,6 +12,7 @@ import ClientDetails from "./pages/ClientDetails";
 import AddCustomers from "./pages/addCustomers";
 import Astro from "./pages/Astro"
 import ResultPage from './pages/ResultPage'
+import CoachAssign from "./pages/CoachAssign"
 import './App.css';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/coaches" element={<Coaches />} />
             <Route path="/coaches/:id" element={<CoacheDetails />} />
+            <Route path="/coaches/:id/assign" element={<CoachAssign />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/customers/:id" element={<ClientDetails />} />
             <Route path="/AddCustomers" element={<AddCustomers /> }/>

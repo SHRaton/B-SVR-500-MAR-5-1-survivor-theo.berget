@@ -4,6 +4,7 @@ import './Coaches.css';
 
 function Coaches() {
   const [coaches, setCoaches] = useState([]);
+  const [showMenu, setShowMenu] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,6 +16,14 @@ function Coaches() {
 
   const handleCoachesClick = (coachId) => {
     navigate(`/coaches/${coachId}`);
+  };
+
+  const handleMenuToggle = (coachId) => {
+    setShowMenu(showMenu === coachId ? null : coachId);
+  };
+
+  const handleAssignClient = (coachId) => {
+    navigate(`/coaches/${coachId}/assign`);
   };
 
   const nb_coaches = coaches.length;
@@ -46,7 +55,12 @@ function Coaches() {
                 </p>
               </div>
               <div className='last'>
-                <p>...</p>
+                <p onClick={() => handleMenuToggle(coache.id)}>...</p>
+                {showMenu === coache.id && (
+                  <div className="menu">
+                    <p onClick={() => handleAssignClient(coache.id)}>Assign</p>
+                  </div>
+                )}
               </div>
             </div>
           ))}
