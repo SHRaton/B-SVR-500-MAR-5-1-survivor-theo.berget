@@ -16,7 +16,7 @@ app.use(express.json()); // Pour traiter le JSON dans les requêtes
 const initializeDatabase = () => {
     // Préparer les déclarations pour créer les tables
     db.run('CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL, name TEXT, surname TEXT, birth_date TEXT, gender TEXT, work TEXT)');
-    db.run('CREATE TABLE IF NOT EXISTS Customers (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL, name TEXT, surname TEXT, birth_date TEXT, gender TEXT, description TEXT, astrological_sign TEXT, phone_number TEXT, address TEXT)');
+    db.run('CREATE TABLE IF NOT EXISTS Customers (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL, name TEXT, surname TEXT, birth_date TEXT, gender TEXT, description TEXT, astrological_sign TEXT, phone_number TEXT, address TEXT, coach_id INTEGER, FOREIGN KEY (coach_id) REFERENCES Users(id))');
     db.run('CREATE TABLE IF NOT EXISTS Events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, max_participant INTEGER, location_x INTEGER, location_y INTEGER, type TEXT, employee_id INTEGER, location_name TEXT, FOREIGN KEY (employee_id) REFERENCES Users(id))');
     db.run('CREATE TABLE IF NOT EXISTS Encounters (id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER, date TEXT, rating INTEGER, comment TEXT, source TEXT)');
     db.run('CREATE TABLE IF NOT EXISTS Tips (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, tip TEXT)');
@@ -746,6 +746,53 @@ app.post('/api/addUser', (req, res) => {
     });
 });
 
+// Add coach_id to customer || PUT METHOD
+app.put('/api/addCoachToCustomer/:id', (req, res) => {
+    const customer_id = req.params.id;
+    const { coach_id } = req.body;
+
+    const stmt = db.prepare('UPDATE Customers SET coach_id = ? WHERE id = ?');
+    stmt.run(coach_id, customer_id, function(err) {
+        if (err) {
+            console.error("Erreur lors de l'ajout du coach au client:", err);
+            return res.status(500).send("Erreur lors de l'ajout du coach au client");
+        }
+        res.status(200).send({ id: this.lastID });
+    });
+});
+
+// Get Coach by ID || GET METHOD
+app.get('/api/coaches/:id', (req, res) => {
+    const id = req.params.id;
+
+    db.get('SELECT * FROM Users WHERE id = ?', [id], (err, row) => {
+        if (err) {
+            res.status(400).json({"error": err.message});
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": row
+        });
+    });
+});
+
+// Get Customer by Coach_id || GET METHOD
+app.get('/api/customersByCoach/:id', (req, res) => {
+    const coach_id = req.params.id;
+
+    db.all('SELECT * FROM Customers WHERE coach_id = ?', [coach_id], (err, rows) => {
+        if (err) {
+            res.status(400).json({"error": err.message});
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": rows
+        });
+    });
+});
+
 // Delete customer || DELETE METHOD
 app.delete('/api/deleteCustomer/:id', (req, res) => {
     const id = req.params.id;
@@ -780,6 +827,7 @@ const populateData = async () => {
     await getAllEvents();
     await fetchAndInsertTips();
     await processAllCustomers();
+    console.log("Les données ont été importées avec succès.");
 }
 
 populateData();
