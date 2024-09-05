@@ -20,7 +20,7 @@ const initializeDatabase = () => {
     db.run('CREATE TABLE IF NOT EXISTS Events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, max_participant INTEGER, location_x INTEGER, location_y INTEGER, type TEXT, employee_id INTEGER, location_name TEXT, FOREIGN KEY (employee_id) REFERENCES Users(id))');
     db.run('CREATE TABLE IF NOT EXISTS Encounters (id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER, date TEXT, rating INTEGER, comment TEXT, source TEXT)');
     db.run('CREATE TABLE IF NOT EXISTS Tips (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, tip TEXT)');
-    db.run('CREATE TABLE IF NOT EXISTS Clothes (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, customer_id INTEGER, FOREIGN KEY (customer_id) REFERENCES Customers(id))');
+    db.run('CREATE TABLE IF NOT EXISTS Clothes (id INTEGER, type TEXT, customer_id INTEGER, FOREIGN KEY (customer_id) REFERENCES Customers(id))');
 };
 
 // Initialiser la base de données
@@ -368,30 +368,30 @@ async function processAllCustomers() {
     });
   }
 
-  async function fetchAndInsertClothes(customerId) {
-    try {
-      // Utilisation du config avec axios.get pour inclure les headers
-      const response = await axios.get(`https://soul-connection.fr/api/customers/${customerId}/clothes`, config);
-      const clothesList = response.data; // Supposons que la réponse est un tableau d'objets
-      // Boucle sur la liste des vêtements et insertion dans la table Clothes
-      clothesList.forEach((clothingItem) => {
-        const { type } = clothingItem;
-        db.run(
-          `INSERT INTO Clothes (Type, customer_id) VALUES (?, ?)`,
-          [type, customerId],
-          function (err) {
-            if (err) {
-              return console.error(err.message);
-            }
-            console.log(`Vêtement inséré pour le client ${customerId}`);
+async function fetchAndInsertClothes(customerId) {
+  try {
+    // Utilisation du config avec axios.get pour inclure les headers
+    const response = await axios.get(`https://soul-connection.fr/api/customers/${customerId}/clothes`, config);
+    const clothesList = response.data; // Supposons que la réponse est un tableau d'objets
+    // Boucle sur la liste des vêtements et insertion dans la table Clothes
+    clothesList.forEach((clothingItem) => {
+      const {id, type } = clothingItem;
+      db.run(
+        `INSERT INTO Clothes (id, Type, customer_id) VALUES (?, ?, ?)`,
+        [id, type, customerId],
+        function (err) {
+          if (err) {
+            return console.error(err.message);
           }
-        );
-        createClothesPngFile(clothingItem.id); // Stocker l'image dans la base de données
-      });
-    } catch (error) {
-      console.error(`Erreur lors de la récupération des vêtements pour le client ${customerId}:`, error);
-    }
+          console.log(`Vêtement inséré pour le client ${customerId}`);
+        }
+      );
+      createClothesPngFile(clothingItem.id); // Stocker l'image dans la base de données
+    });
+  } catch (error) {
+    console.error(`Erreur lors de la récupération des vêtements pour le client ${customerId}:`, error);
   }
+}
 
 const createEmployeePngFile = (id) => {
     const fs = require('fs');
@@ -641,18 +641,82 @@ app.get('/api/encounters/not-pass/:customer_id', (req, res) => {
 });
 
 // Get all clothes
-app.get('/api/clothes', (req, res) => {
-    db.all('SELECT * FROM Clothes', [], (err, rows) => {
+app.get('/api/customers/:id/clothes/hat-cap', (req, res) => {
+    const customerId = req.params.id;
+
+    // Requête SQL pour sélectionner les vêtements liés à un client spécifique
+    const sql = "SELECT * FROM Clothes WHERE customer_id = ? and type = 'hat/cap'";
+
+    db.all(sql, [customerId], (err, rows) => {
       if (err) {
-        res.status(400).json({"error": err.message});
+        res.status(400).json({ "error": err.message });
         return;
       }
+      // Envoi de la réponse avec les vêtements trouvés
       res.json({
         "message": "success",
         "data": rows
       });
     });
 });
+
+app.get('/api/customers/:id/clothes/bottom', (req, res) => {
+    const customerId = req.params.id;
+
+    // Requête SQL pour sélectionner les vêtements liés à un client spécifique
+    const sql = "SELECT * FROM Clothes WHERE customer_id = ? and type = 'bottom'";
+
+    db.all(sql, [customerId], (err, rows) => {
+      if (err) {
+        res.status(400).json({ "error": err.message });
+        return;
+      }
+      // Envoi de la réponse avec les vêtements trouvés
+      res.json({
+        "message": "success",
+        "data": rows
+      });
+    });
+});
+
+app.get('/api/customers/:id/clothes/top', (req, res) => {
+    const customerId = req.params.id;
+
+    // Requête SQL pour sélectionner les vêtements liés à un client spécifique
+    const sql = "SELECT * FROM Clothes WHERE customer_id = ? and type = 'top'";
+
+    db.all(sql, [customerId], (err, rows) => {
+      if (err) {
+        res.status(400).json({ "error": err.message });
+        return;
+      }
+      // Envoi de la réponse avec les vêtements trouvés
+      res.json({
+        "message": "success",
+        "data": rows
+      });
+    });
+});
+
+app.get('/api/customers/:id/clothes/shoes', (req, res) => {
+    const customerId = req.params.id;
+
+    // Requête SQL pour sélectionner les vêtements liés à un client spécifique
+    const sql = "SELECT * FROM Clothes WHERE customer_id = ? and type = 'shoes'";
+
+    db.all(sql, [customerId], (err, rows) => {
+      if (err) {
+        res.status(400).json({ "error": err.message });
+        return;
+      }
+      // Envoi de la réponse avec les vêtements trouvés
+      res.json({
+        "message": "success",
+        "data": rows
+      });
+    });
+});
+
 
 // Add new customer || POST METHOD
 app.post('/api/addCustomer', (req, res) => {
