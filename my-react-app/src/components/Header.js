@@ -57,6 +57,12 @@ function Header({ isLoggedIn, toggleLogin }) {
         >
           <h1>Events</h1>
         </div>
+        <div
+          className={`astro ${isActive("/astro") ? "active" : ""}`}
+          onClick={() => navigate("/astro")}
+        >
+          <h1>Astro</h1>
+        </div>
       </div>
 
       {/* Aligné à droite */}

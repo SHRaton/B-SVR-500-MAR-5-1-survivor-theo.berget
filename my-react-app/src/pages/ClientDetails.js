@@ -65,12 +65,13 @@ function ClientDetails() {
               <p> {incomings.length}</p>
             </div>
             <div className="textEncounters">
-              <p>Total</p>
+              <p>Total Encounters</p>
               <p>Positives</p>
               <p>In Progress</p>
             </div>
           </div>
           <div className="details">
+            <p></p>
 
           </div>
         </div>

@@ -1,0 +1,75 @@
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-section {
+    width: 48%; /* Chaque section prend environ la moitié de la largeur */
+}
+
+.search-bar {
+    width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.client-list {
+    margin-top: 20px;
+}
+
+.client-list div {
+    display: flex;
+    flex-direction: raw;
+    justify-content: space-between;
+}
+
+.client-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.client-item:hover {
+    background-color: #f0f0f0;
+}
+
+.client-item.selected {
+    border-radius: 10px;
+    background-color: rgb(240, 176, 176);
+}
+
+.analyze-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.analyze-button:hover {
+    background-color: #0056b3;
+}
+
+.result {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.astro-image {
+  width: 30px; /* Ajustez la taille selon vos besoins */
+  height: 30px;
+  margin-left: 10px;
+}
