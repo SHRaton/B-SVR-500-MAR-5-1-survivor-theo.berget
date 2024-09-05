@@ -82,6 +82,8 @@ const insertEmployeeIntoDB = (employee) => {
                 console.error(`Erreur lors de l'insertion de l'employé:`, err.message);
             }
         });
+        createEmployeePngFile(employee.id); // Créer un fichier PNG pour l'employé
+        stockEmployeeImage(employee.id); // Stocker l'image dans la base de données
         stmt.finalize(); // Finaliser la déclaration préparée
     });
 };
@@ -147,6 +149,8 @@ const insertCustomerIntoDB = (customer) => {
                 console.error(`Erreur lors de l'insertion du client:`, err.message);
             }
         });
+        createCustomerPngFile(customer.id); // Créer un fichier PNG pour le client
+        stockCustomerImage(customer.id); // Stocker l'image dans la base de données
         stmt.finalize(); // Finaliser la déclaration préparée
     });
 };
@@ -382,11 +386,139 @@ async function processAllCustomers() {
             console.log(`Vêtement inséré pour le client ${customerId}`);
           }
         );
+        createClothesPngFile(clothingItem.id); // Stocker l'image dans la base de données
       });
     } catch (error) {
       console.error(`Erreur lors de la récupération des vêtements pour le client ${customerId}:`, error);
     }
   }
+
+const createEmployeePngFile = (id) => {
+    const fs = require('fs');
+    // Exemple de chaîne base64 représentant une image PNG
+    const base64Image = 'iVBORw0KGgoAAAANSUhEUgAAAAUA...'; // Tronquée pour l'exemple
+    // Convertir la chaîne base64 en données binaires
+    const imageBuffer = Buffer.from(base64Image, 'base64');
+    // Chemin où l'image sera stockée
+    const outputPath = '../my-react-app/public/employees/employee_' + id + '.png';
+    // Écrire le fichier sur le disque
+    fs.writeFile(outputPath, imageBuffer, (err) => {
+        if (err) {
+            console.error('Erreur lors de la sauvegarde de l\'image :', err);
+        } else {
+            console.log('Image sauvegardée avec succès à', outputPath);
+        }
+    });
+};
+
+const stockEmployeeImage = async (id) => {
+    const fs = require('fs');
+    const path = "../my-react-app/public/employees/employee_" + id + ".png";
+
+    try {
+        // Perform the Axios request to get the image URL
+        const response = await axios.get(`https://soul-connection.fr/api/employees/${id}/image`, {
+            ...config,
+            responseType: 'arraybuffer'  // Ensure the response is a buffer for image data
+        });
+
+        // Write the image data to the specified path
+        fs.writeFile(path, response.data, (err) => {
+            if (err) {
+                console.error('Erreur lors de la sauvegarde de l\'image :', err);
+            } else {
+                console.log('Image téléchargée et sauvegardée avec succès à', path);
+            }
+        });
+    } catch (error) {
+        console.error('Erreur lors du téléchargement de l\'image :', error.message);
+    }
+};
+
+const createCustomerPngFile = (id) => {
+    const fs = require('fs');
+    // Exemple de chaîne base64 représentant une image PNG
+    const base64Image = 'iVBORw0KGgoAAAANSUhEUgAAAAUA...'; // Tronquée pour l'exemple
+    // Convertir la chaîne base64 en données binaires
+    const imageBuffer = Buffer.from(base64Image, 'base64');
+    // Chemin où l'image sera stockée
+    const outputPath = '../my-react-app/public/customers/customer_' + id + '.png';
+    // Écrire le fichier sur le disque
+    fs.writeFile(outputPath, imageBuffer, (err) => {
+        if (err) {
+            console.error('Erreur lors de la sauvegarde de l\'image :', err);
+        } else {
+            console.log('Image sauvegardée avec succès à', outputPath);
+        }
+    });
+};
+
+const stockCustomerImage = async (id) => {
+    const fs = require('fs');
+    const path = "../my-react-app/public/customers/customer_" + id + ".png";
+
+    try {
+        // Perform the Axios request to get the image URL
+        const response = await axios.get(`https://soul-connection.fr/api/customers/${id}/image`, {
+            ...config,
+            responseType: 'arraybuffer'  // Ensure the response is a buffer for image data
+        });
+
+        // Write the image data to the specified path
+        fs.writeFile(path, response.data, (err) => {
+            if (err) {
+                console.error('Erreur lors de la sauvegarde de l\'image :', err);
+            } else {
+                console.log('Image téléchargée et sauvegardée avec succès à', path);
+            }
+        });
+    } catch (error) {
+        console.error('Erreur lors du téléchargement de l\'image :', error.message);
+    }
+};
+
+const createClothesPngFile = (id) => {
+    const fs = require('fs');
+    // Exemple de chaîne base64 représentant une image PNG
+    const base64Image = 'iVBORw0KGgoAAAANSUhEUgAAAAUA...'; // Tronquée pour l'exemple
+    // Convertir la chaîne base64 en données binaires
+    const imageBuffer = Buffer.from(base64Image, 'base64');
+    // Chemin où l'image sera stockée
+    const outputPath = '../my-react-app/public/clothes/clothe_' + id + '.png';
+    // Écrire le fichier sur le disque
+    fs.writeFile(outputPath, imageBuffer, (err) => {
+        if (err) {
+            console.error('Erreur lors de la sauvegarde de l\'image :', err);
+        } else {
+            console.log('Image sauvegardée avec succès à', outputPath);
+        }
+    });
+    stockClothesImage(id);
+};
+
+const stockClothesImage = async (id) => {
+    const fs = require('fs');
+    const path = "../my-react-app/public/clothes/clothe_" + id + ".png";
+
+    try {
+        // Perform the Axios request to get the image URL
+        const response = await axios.get(`https://soul-connection.fr/api/clothes/${id}/image`, {
+            ...config,
+            responseType: 'arraybuffer'  // Ensure the response is a buffer for image data
+        });
+
+        // Write the image data to the specified path
+        fs.writeFile(path, response.data, (err) => {
+            if (err) {
+                console.error('Erreur lors de la sauvegarde de l\'image :', err);
+            } else {
+                console.log('Image téléchargée et sauvegardée avec succès à', path);
+            }
+        });
+    } catch (error) {
+        console.error('Erreur lors du téléchargement de l\'image :', error.message);
+    }
+};
 
 ////////////////////////////////////////////////////////////////// CONTRONLLERS ////////////////////////////////////////////////////////////////////////////
 
@@ -561,34 +693,6 @@ app.delete('/api/deleteUser/:id', (req, res) => {
         res.status(200).send({ id: this.lastID });
     });
 });
-
-// Fonction pour récupérer les vêtements et les insérer dans la base de données
-async function fetchAndInsertClothes(customerId) {
-    try {
-      // Requête HTTP vers l'API pour obtenir les vêtements du client
-      const response = await axios.get(`https://soul-connection.fr/api/customers/${customerId}/clothes`, config);
-      const clothesList = response.data; // Supposons que la réponse est un tableau d'objets
-
-      // Boucle sur la liste des vêtements et insertion dans la table Clothes
-      clothesList.forEach((clothingItem) => {
-        const { id, type } = clothingItem;
-
-        // Insertion dans la table Clothes
-        db.run(
-          `INSERT INTO Clothes (id, Type, customer_id) VALUES (?, ?, ?)`,
-          [id, type, customerId],
-          function (err) {
-            if (err) {
-              return console.error(err.message);
-            }
-            console.log(`Vêtement inséré avec id: ${this.lastID}`);
-          }
-        );
-      });
-    } catch (error) {
-      console.error('Erreur lors de la récupération des vêtements :', error);
-    }
-  }
 
 //Exécution des fonctions
 const populateData = async () => {
