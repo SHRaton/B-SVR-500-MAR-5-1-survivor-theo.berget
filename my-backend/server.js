@@ -640,6 +640,20 @@ app.get('/api/encounters/not-pass/:customer_id', (req, res) => {
     });
 });
 
+// Get all clothes
+app.get('/api/clothes', (req, res) => {
+    db.all('SELECT * FROM Clothes', [], (err, rows) => {
+      if (err) {
+        res.status(400).json({"error": err.message});
+        return;
+      }
+      res.json({
+        "message": "success",
+        "data": rows
+      });
+    });
+});
+
 // Add new customer || POST METHOD
 app.post('/api/addCustomer', (req, res) => {
     const { email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address } = req.body;
