@@ -356,6 +356,10 @@ const insertTipsIntoDB = (tips) => {
 };
 
 
+////////////////////////////////////////////////////////////////// CONTRONLLERS ////////////////////////////////////////////////////////////////////////////
+
+
+// Get all tips
 app.get('/api/tips', (req, res) => {
     db.all('SELECT * FROM Tips', [], (err, rows) => {
       if (err) {
@@ -369,7 +373,8 @@ app.get('/api/tips', (req, res) => {
     });
   });
 
-  app.get('/api/customers', (req, res) => {
+// Get all customers
+app.get('/api/customers', (req, res) => {
     db.all('SELECT * FROM Customers', [], (err, rows) => {
       if (err) {
         res.status(400).json({"error": err.message});
@@ -382,7 +387,8 @@ app.get('/api/tips', (req, res) => {
     });
   });
 
-  app.get('/api/customers/:id', (req, res) => {
+// Get customer by ID
+app.get('/api/customers/:id', (req, res) => {
     const id = req.params.id;
     db.get('SELECT * FROM Customers WHERE id = ?', [id], (err, row) => {
       if (err) {
@@ -396,20 +402,36 @@ app.get('/api/tips', (req, res) => {
     });
   });
 
-
-app.post('/api/addCustomer', (req, res) => {
-    const { email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address } = req.body;
-
-    const stmt = db.prepare('INSERT INTO Customers (email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-    stmt.run(email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address, function(err) {
-        if (err) {
-            console.error("Erreur lors de l'ajout du client:", err);
-            return res.status(500).send("Erreur lors de l'ajout du client");
-        }
-        res.status(200).send({ id: this.lastID });
+// Get all Users with work = Coach
+app.get('/api/users', (req, res) => {
+    db.all("SELECT * FROM Users WHERE work = 'Coach'", [], (err, rows) => {
+      if (err) {
+        res.status(400).json({"error": err.message});
+        return;
+      }
+      res.json({
+        "message": "success",
+        "data": rows
+      });
     });
-});
+  });
 
+// Get User by ID
+app.get('/api/users/:id', (req, res) => {
+    const id = req.params.id;
+    db.get('SELECT * FROM Users WHERE id = ?', [id], (err, row) => {
+      if (err) {
+        res.status(400).json({"error": err.message});
+        return;
+      }
+      res.json({
+        "message": "success",
+        "data": row
+      });
+    });
+  });
+
+// Give all encounters with customer_id
 app.get('/api/encounters/:customer_id', (req, res) => {
     const customer_id = req.params.customer_id;
     db.all('SELECT * FROM Encounters WHERE customer_id = ?', [customer_id], (err, rows) => {
@@ -439,6 +461,7 @@ app.get('/api/encounters/rating/:customer_id', (req, res) => {
     });
 });
 
+// Give number of encounters with a date > "now" with customer_id
 app.get('/api/encounters/not-pass/:customer_id', (req, res) => {
     const customer_id = req.params.customer_id;
     db.all('SELECT * FROM Encounters WHERE customer_id = ? AND date > DATE("now")', [customer_id], (err, rows) => {
@@ -453,6 +476,33 @@ app.get('/api/encounters/not-pass/:customer_id', (req, res) => {
     });
 });
 
+// Add new customer || POST METHOD
+app.post('/api/addCustomer', (req, res) => {
+    const { email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address } = req.body;
+
+    const stmt = db.prepare('INSERT INTO Customers (email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    stmt.run(email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address, function(err) {
+        if (err) {
+            console.error("Erreur lors de l'ajout du client:", err);
+            return res.status(500).send("Erreur lors de l'ajout du client");
+        }
+        res.status(200).send({ id: this.lastID });
+    });
+});
+
+// Add new user || POST METHOD
+app.post('/api/addUser', (req, res) => {
+    const { email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address } = req.body;
+
+    const stmt = db.prepare('INSERT INTO Users (email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    stmt.run(email, name, surname, birth_date, gender, description, astrological_sign, phone_number, address, function(err) {
+        if (err) {
+            console.error("Erreur lors de l'ajout de l'utilisateur:", err);
+            return res.status(500).send("Erreur lors de l'ajout de l'utilisateur");
+        }
+        res.status(200).send({ id: this.lastID });
+    });
+});
 
 //Exécution des fonctions
 getAllEmployees();
