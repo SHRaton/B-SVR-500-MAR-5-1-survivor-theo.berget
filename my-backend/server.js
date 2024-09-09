@@ -566,6 +566,20 @@ app.get('/api/customers/:id', (req, res) => {
     });
   });
 
+//Get all Events ||| GET METHOD
+app.get('/api/events', (req, res) => {
+    db.all('SELECT * FROM Events', [], (err, rows) => {
+      if (err) {
+        res.status(400).json({"error": err.message});
+        return;
+      }
+      res.json({
+        "message": "success",
+        "data": rows
+      });
+    });
+  });
+
 // Get all Users with work = Coach
 app.get('/api/users', (req, res) => {
     db.all("SELECT * FROM Users WHERE work = 'Coach'", [], (err, rows) => {
@@ -787,6 +801,20 @@ app.get('/api/coaches/:id', (req, res) => {
         res.json({
             "message": "success",
             "data": row
+        });
+    });
+});
+
+//Get All Encounters || GET METHOD
+app.get('/api/encounters', (req, res) => {
+    db.all('SELECT * FROM Encounters', (err, rows) => {
+        if (err) {
+            res.status(400).json({"error": err.message});
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": rows
         });
     });
 });
