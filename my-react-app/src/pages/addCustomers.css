@@ -20,7 +20,7 @@ select {
   width: 95%;
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid #202020;
   border-radius: 4px;
   font-size: 16px;
 }
@@ -53,7 +53,6 @@ select option {
   color: #000;
 }
 
-/* Pour les labels (non inclus dans votre code, mais ajoutés pour plus de clarté) */
 label {
   margin-bottom: 5px;
   font-weight: bold;

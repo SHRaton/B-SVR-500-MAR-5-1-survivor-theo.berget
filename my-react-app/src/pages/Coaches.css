@@ -1,0 +1,22 @@
+.firstTitle {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  width: 70px;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  color: black;
+}
+
+.first {
+  text-align: center;
+  width: 70px;
+  border: 1px dashed rgb(230, 230, 230);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.first:hover {
+  background-color: whitesmoke;
+}

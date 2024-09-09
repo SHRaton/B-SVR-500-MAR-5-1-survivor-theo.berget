@@ -22,8 +22,25 @@ function Coaches() {
     setShowMenu(showMenu === coachId ? null : coachId);
   };
 
-  const handleAssignClient = (coachId) => {
+  const handleAssignCoach = (coachId) => {
     navigate(`/coaches/${coachId}/assign`);
+  };
+
+  const handleDeleteCoach = async (coachId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/deleteUser/${coachId}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setCoaches(coaches.filter(coach => coach.id !== coachId));
+        setShowMenu(null);
+      } else {
+        alert('Failed to delete customer');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while deleting the customer');
+    }
   };
 
   const nb_coaches = coaches.length;
@@ -45,6 +62,9 @@ function Coaches() {
         <h2 className="subtitleCustom">You have {nb_coaches} coaches.</h2>
         <ul className='clients'>
           <div className='headerCustom1'>
+            <div className='firstTitle'>
+              <p>Picture</p>
+            </div>
             <div className="headerCustom2">
               <p>Cocahes</p>
               <p>Email</p>
@@ -55,6 +75,8 @@ function Coaches() {
           </div>
           {coaches.map(coache => (
             <div className="blocMain">
+              <div className='first' style={{ backgroundImage: `url("/employees/employee_${coache.id}.png")` }}>
+              </div>
               <div key={coache.id} onClick={() => handleCoachesClick(coache.id)} className="bloc">
                 <p>
                   {coache.name} {coache.surname}
@@ -67,7 +89,8 @@ function Coaches() {
                 <p onClick={() => handleMenuToggle(coache.id)}>...</p>
                 {showMenu === coache.id && (
                   <div className="menu">
-                    <p onClick={() => handleAssignClient(coache.id)}>Assign</p>
+                    <p onClick={() => handleAssignCoach(coache.id)}>Assign</p>
+                    <p onClick={() => handleDeleteCoach(coache.id)} style={{ color: 'red' }}>Delete</p>
                   </div>
                 )}
               </div>

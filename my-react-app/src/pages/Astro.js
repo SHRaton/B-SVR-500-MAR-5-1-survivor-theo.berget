@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import './Astro.css';
 
 function CompatibilityAnalysis() {
   const [clients, setClients] = useState([]); // Stocke tous les clients
-  const [searchTerm1, setSearchTerm1] = useState(""); // Recherche pour le premier client
-  const [searchTerm2, setSearchTerm2] = useState(""); // Recherche pour le deuxième client
   const [selectedClient1, setSelectedClient1] = useState(null); // Premier client sélectionné
   const [selectedClient2, setSelectedClient2] = useState(null); // Deuxième client sélectionné
   const [compatibilityResult, setCompatibilityResult] = useState(""); // Résultat de la compatibilité
   const [percentageResult, setPercentageResult] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch tous les clients
@@ -36,6 +32,7 @@ function CompatibilityAnalysis() {
     Pisces: "/astro/pisces.png",
   };
 
+  // Matrice de compatibilité prédéfinie
   const compatibilityMatrix = {
     Aries: { Aries: 77, Taurus: 42, Gemini: 68, Cancer: 39, Leo: 73, Virgo: 31, Libra: 52, Scorpio: 28, Sagittarius: 64, Capricorn: 22, Aquarius: 58, Pisces: 47 },
     Taurus: { Aries: 63, Taurus: 62, Gemini: 54, Cancer: 66, Leo: 37, Virgo: 71, Libra: 57, Scorpio: 50, Sagittarius: 52, Capricorn: 63, Aquarius: 41, Pisces: 53 },
@@ -51,34 +48,67 @@ function CompatibilityAnalysis() {
     Pisces: { Aries: 68, Taurus: 54, Gemini: 46, Cancer: 67, Leo: 55, Virgo: 43, Libra: 59, Scorpio: 72, Sagittarius: 52, Capricorn: 31, Aquarius: 48, Pisces: 77 }
   };
 
-  // Filtrer les clients en fonction de la recherche pour la première barre
-  const filteredClients1 = clients.filter(client =>
-    client.name.toLowerCase().includes(searchTerm1.toLowerCase())
-  );
-
-  // Filtrer les clients en fonction de la recherche pour la deuxième barre
-  const filteredClients2 = clients.filter(client =>
-    client.name.toLowerCase().includes(searchTerm2.toLowerCase()) &&
-    client.id !== selectedClient1?.id // Empêcher de sélectionner le même client dans la deuxième barre
-  );
-
-  // Fonction pour calculer la compatibilité
+  // Fonction pour calculer la compatibilité en utilisant la matrice
   const analyzeCompatibility = () => {
     if (selectedClient1 && selectedClient2) {
       const sign1 = selectedClient1.astrological_sign;
       const sign2 = selectedClient2.astrological_sign;
-      // Obtenir le pourcentage à partir de compatibilityMatrix
-      const compatibilityPercentage = compatibilityMatrix[sign1][sign2] || 'Unknown';
-      if (sign1 === sign2) {
-        setCompatibilityResult(`Great match! Both are ${sign1}s! Compatibility:`);
-      } else {
-        setCompatibilityResult(`${selectedClient1.name} (${sign1}) and ${selectedClient2.name} (${sign2}) have different signs. Compatibility:`);
-      }
+      // Récupérer le pourcentage de compatibilité de la matrice
+      const compatibilityPercentage = compatibilityMatrix[sign1][sign2];
+
+      setCompatibilityResult(`${selectedClient1.name} (${sign1}) et ${selectedClient2.name} (${sign2})` + " ont une compatibilité de :");
       setPercentageResult(`${compatibilityPercentage}%`);
     } else {
-      setCompatibilityResult("Please select both clients.");
-      setPercentageResult(``);
+      setCompatibilityResult("Veuillez sélectionner deux clients.");
+      setPercentageResult("");
     }
+  };
+
+  // Composant personnalisé pour la liste déroulante avec images
+  const Dropdown = ({ clients, selectedClient, setSelectedClient, placeholder }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleSelect = (client) => {
+      setSelectedClient(client);
+      setIsOpen(false);
+    };
+
+    return (
+      <div className="custom-dropdown">
+        <div className="selected-option" onClick={() => setIsOpen(!isOpen)}>
+          {selectedClient ? (
+            <div className="client-item">
+              <span>{selectedClient.name} {selectedClient.surname}</span>
+              <img
+                src={astroImages[selectedClient.astrological_sign]}
+                alt={selectedClient.astrological_sign}
+                className="astro-image"
+              />
+            </div>
+          ) : (
+            <span>{placeholder}</span>
+          )}
+        </div>
+        {isOpen && (
+          <div className="dropdown-options">
+            {clients.map(client => (
+              <div
+                key={client.id}
+                className="client-item"
+                onClick={() => handleSelect(client)}
+              >
+                <span>{client.name} {client.surname}</span>
+                <img
+                  src={astroImages[client.astrological_sign]}
+                  alt={client.astrological_sign}
+                  className="astro-image"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -91,76 +121,33 @@ function CompatibilityAnalysis() {
       <button onClick={analyzeCompatibility} className="analyze-button">
         Analyze Compatibility
       </button>
+
       {/* Affichage du résultat de compatibilité en haut */}
       {compatibilityResult && (
         <div className="result">
-          <h2>Compatibility Result:</h2>
+          <h2>Résultat de compatibilité :</h2>
           <p>{compatibilityResult}</p>
           <h1>{percentageResult}</h1>
         </div>
       )}
 
       <div className="search-container">
-        {/* Barre de recherche pour le premier client */}
-        <div className="search-section">
-          <input
-            type="text"
-            placeholder="Search first client..."
-            value={searchTerm1}
-            onChange={(e) => setSearchTerm1(e.target.value)}
-            className="search-bar"
-          />
-          <div className="client-list">
-            {filteredClients1.map(client => (
-              <div
-                key={client.id}
-                className={`client-item ${selectedClient1?.id === client.id ? 'selected' : ''}`}
-                onClick={() => setSelectedClient1(client)}
-              >
-                <div>{client.name} {client.surname}</div>
-                <div>
-                  {client.astrological_sign}
-                  {/* Affiche l'image correspondante au signe astrologique */}
-                  <img
-                    src={astroImages[client.astrological_sign]}
-                    alt={client.astrological_sign}
-                    className="astro-image"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Liste déroulante personnalisée pour le premier client */}
+        <Dropdown
+          clients={clients}
+          selectedClient={selectedClient1}
+          setSelectedClient={setSelectedClient1}
+          placeholder="Sélectionnez le premier client..."
+        />
+        <div className="hearth">
         </div>
-        {/* Barre de recherche pour le deuxième client */}
-        <div className="search-section">
-          <input
-            type="text"
-            placeholder="Search second client..."
-            value={searchTerm2}
-            onChange={(e) => setSearchTerm2(e.target.value)}
-            className="search-bar"
-          />
-          <div className="client-list">
-            {filteredClients2.map(client => (
-              <div
-                key={client.id}
-                className={`client-item ${selectedClient2?.id === client.id ? 'selected' : ''}`}
-                onClick={() => setSelectedClient2(client)}
-              >
-                <div>{client.name} {client.surname}</div>
-                <div>
-                  {client.astrological_sign}
-                  {/* Affiche l'image correspondante au signe astrologique */}
-                  <img
-                    src={astroImages[client.astrological_sign]}
-                    alt={client.astrological_sign}
-                    className="astro-image"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Liste déroulante personnalisée pour le deuxième client */}
+        <Dropdown
+          clients={clients.filter(client => client.id !== selectedClient1?.id)} // Empêcher de sélectionner le même client
+          selectedClient={selectedClient2}
+          setSelectedClient={setSelectedClient2}
+          placeholder="Sélectionnez le deuxième client..."
+        />
       </div>
     </div>
   );

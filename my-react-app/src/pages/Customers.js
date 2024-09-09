@@ -63,6 +63,9 @@ function Customers() {
       <h2 className="subtitleCustom">You have {nb_customers} customers.</h2>
       <ul className='clients'>
         <div className='headerCustom1'>
+          <div className='firstTitle'>
+            <p>Picture</p>
+          </div>
           <div className="headerCustom2">
             <p>Customers</p>
             <p>Email</p>
@@ -75,6 +78,8 @@ function Customers() {
         </div>
         {clients.map(client => (
           <div className="blocMain" key={client.id}>
+            <div className='first' style={{ backgroundImage: `url("/customers/customer_${client.id}.png")` }}>
+            </div>
             <div onClick={() => handleClientClick(client.id)} className="bloc">
               <p>{client.name} {client.surname}</p>
               <p>{client.email}</p>

@@ -16,8 +16,7 @@ function Header({ isLoggedIn, toggleLogin }) {
 
   // Fonction pour vérifier si le chemin actuel correspond à celui passé en paramètre
   const isActive = (path) => location.pathname === path;
-  const isActiveCoaches = (path) => location.pathname.startsWith(path);
-  const isActiveCustomers = (path) => location.pathname.startsWith(path) || location.pathname === "/addCustomers";
+  const isActivePartial = (path) => location.pathname.startsWith(path);
 
   return (
     <div className="header">
@@ -35,31 +34,31 @@ function Header({ isLoggedIn, toggleLogin }) {
           <h1>Dashboard</h1>
         </div>
         <div
-          className={`coaches ${isActiveCoaches("/coaches") ? "active" : ""}`}
+          className={`${isActivePartial("/coaches") || location.pathname === "/addCoaches" ? "active" : ""}`}
           onClick={() => navigate("/coaches")}
         >
           <h1>Coaches</h1>
         </div>
         <div
-          className={`custom ${isActiveCustomers("/customers") ? "active" : ""}`}
+          className={`${isActivePartial("/customers") || location.pathname === "/addCustomers" ? "active" : ""}`}
           onClick={() => navigate("/customers")}
         >
           <h1>Customers</h1>
         </div>
         <div
-          className={`tips ${isActive("/tips") ? "active" : ""}`}
+          className={`${isActive("/tips") ? "active" : ""}`}
           onClick={() => navigate("/tips")}
         >
           <h1>Tips</h1>
         </div>
         <div
-          className={`events ${isActive("/events") ? "active" : ""}`}
+          className={`${isActive("/events") ? "active" : ""}`}
           onClick={() => navigate("/events")}
         >
           <h1>Events</h1>
         </div>
         <div
-          className={`astro ${isActive("/astro") ? "active" : ""}`}
+          className={`${isActivePartial("/astro") ? "active" : ""}`}
           onClick={() => navigate("/astro")}
         >
           <h1>Astro</h1>

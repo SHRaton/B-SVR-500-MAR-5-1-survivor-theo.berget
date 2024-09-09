@@ -30,54 +30,6 @@ function CoacheDetails() {
       .catch(error => console.error('Error fetching users:', error));
   }, [id]);
 
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/encounters/${id}`)
-      .then(response => response.json())
-      .then(data => setEncounters(data.data))
-      .catch(error => console.error('Error fetching encounters:', error));
-  }, [id]);
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/encounters/rating/${id}`)
-      .then(response => response.json())
-      .then(data => setRatings(data.data))
-      .catch(error => console.error('Error fetching ratings:', error));
-  }, [id]);
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/encounters/not-pass/${id}`)
-      .then(response => response.json())
-      .then(data => setIncomings(data.data))
-      .catch(error => console.error('Error fetching incomings:', error));
-  }, [id]);
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/users/${id}/clothes/top`)
-      .then(response => response.json())
-      .then(data => setTop(data.data))
-      .catch(error => console.error('Error fetching top clothes:', error));
-  }, [id]);
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/users/${id}/clothes/hat-cap`)
-      .then(response => response.json())
-      .then(data => setHatCap(data.data))
-      .catch(error => console.error('Error fetching hat-cap clothes:', error));
-  }, [id]);
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/users/${id}/clothes/bottom`)
-      .then(response => response.json())
-      .then(data => setBottom(data.data))
-      .catch(error => console.error('Error fetching bottom clothes:', error));
-  }, [id]);
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/users/${id}/clothes/shoes`)
-      .then(response => response.json())
-      .then(data => setShoes(data.data))
-      .catch(error => console.error('Error fetching shoes clothes:', error));
-  }, [id]);
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/customersByCoach/${id}`)
@@ -89,31 +41,6 @@ function CoacheDetails() {
   if (!coaches) {
     return <div>Loading...</div>;
   }
-
-  // Fonctions pour changer l'index (carrousel)
-  const handlePrev = (type) => {
-    if (type === "hat_cap" && hat_cap.length > 0) {
-      setHatCapIndex((prev) => (prev - 1 + hat_cap.length) % hat_cap.length);
-    } else if (type === "top" && top.length > 0) {
-      setTopIndex((prev) => (prev - 1 + top.length) % top.length);
-    } else if (type === "bottom" && bottom.length > 0) {
-      setBottomIndex((prev) => (prev - 1 + bottom.length) % bottom.length);
-    } else if (type === "shoes" && shoes.length > 0) {
-      setShoesIndex((prev) => (prev - 1 + shoes.length) % shoes.length);
-    }
-  };
-
-  const handleNext = (type) => {
-    if (type === "hat_cap" && hat_cap.length > 0) {
-      setHatCapIndex((prev) => (prev + 1) % hat_cap.length);
-    } else if (type === "top" && top.length > 0) {
-      setTopIndex((prev) => (prev + 1) % top.length);
-    } else if (type === "bottom" && bottom.length > 0) {
-      setBottomIndex((prev) => (prev + 1) % bottom.length);
-    } else if (type === "shoes" && shoes.length > 0) {
-      setShoesIndex((prev) => (prev + 1) % shoes.length);
-    }
-  };
 
   // URLs des vêtements
   const coachesImageUrl = `/employees/employee_${id}.png`;
@@ -158,7 +85,14 @@ function CoacheDetails() {
             </div>
           </div>
         </div>
-        <div className="history"></div>
+        <div className="history">
+          {nbCustomers.map(customer => (
+            <div className="blocMain" key={customer.id}>
+              <p>{customer.name}</p>
+              <p>{customer.surname}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
