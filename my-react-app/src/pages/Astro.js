@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 import './Astro.css';
+import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
+
 
 function CompatibilityAnalysis() {
   const [clients, setClients] = useState([]); // Stocke tous les clients
@@ -7,14 +10,20 @@ function CompatibilityAnalysis() {
   const [selectedClient2, setSelectedClient2] = useState(null); // Deuxième client sélectionné
   const [compatibilityResult, setCompatibilityResult] = useState(""); // Résultat de la compatibilité
   const [percentageResult, setPercentageResult] = useState("");
-
+  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
+  const navigate = useNavigate();
+  
   useEffect(() => {
     // Fetch tous les clients
     fetch(`http://localhost:5000/api/customers`)
-      .then(response => response.json())
-      .then(data => setClients(data.data))
-      .catch(error => console.error('Error fetching clients:', error));
+    .then(response => response.json())
+    .then(data => setClients(data.data))
+    .catch(error => console.error('Error fetching clients:', error));
   }, []);
+
+  if (!isLoggedIn) {
+    navigate('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+  }
 
   // Map des signes astrologiques vers les images correspondantes
   const astroImages = {

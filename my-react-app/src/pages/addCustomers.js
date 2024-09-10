@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";  // Import useNavigate
 import './addCustomers.css';
 
 const UserForm = () => {
@@ -15,7 +15,7 @@ const UserForm = () => {
     description: ''
   });
 
-  const navigate = useNavigate();
+  const navigate = useNavigate();  // Initialise useNavigate
 
   const handleChange = (e) => {
     setFormData({
@@ -49,6 +49,8 @@ const UserForm = () => {
           astrological_sign: '',
           description: ''
         });
+
+        // Rediriger vers la page /customers après la soumission réussie
         navigate('/customers');
       } else {
         alert('Failed to save user information');

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import './Dashboard.css';
 import {
   PieChart,
@@ -18,6 +18,9 @@ import {
   BarChart,
 } from 'recharts';
 import { curveCardinal } from 'd3-shape';
+import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
+import { useNavigate } from "react-router-dom";
+
 
 const COLORS = [
   '#8c65ff', '#f6e571', '#ff98ce', '#c495ff',
@@ -32,6 +35,13 @@ function Dashboard() {
   const [customers, setCustomers] = useState([]);
   const [encounters, setEncounters] = useState([]);
   const [sourceData, setSourceData] = useState([]);
+  const navigate = useNavigate();
+  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
+
+  // Redirection si l'utilisateur n'est pas connecté
+  if (!isLoggedIn) {
+    navigate('/login');
+  }
 
   useEffect(() => {
     fetch('http://localhost:5000/api/events')

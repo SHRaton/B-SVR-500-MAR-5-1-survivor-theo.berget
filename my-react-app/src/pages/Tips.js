@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './Tips.css'; // Assurez-vous que le CSS est correctement importé
+import { useNavigate } from 'react-router-dom';
 
 // Import des images pour les flèches
 import arrowDown from './down.png';
 import arrowUp from './up.png';
+import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
 
 function Tips() {
   const [openIndex, setOpenIndex] = useState(null);
+  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
   const [tips, setTips] = useState([]);
-
+  const navigate = useNavigate();
+  
   const toggleDropdown = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+  if (!isLoggedIn) {
+    navigate('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+  }
 
   // Utilisation de useEffect pour récupérer les tips depuis le backend
   useEffect(() => {

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import 'primeicons/primeicons.css';
 import './ClientDetails.css';
+import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
 
 function ClientDetails() {
   const { id } = useParams(); // Récupère l'ID du client depuis l'URL
@@ -19,8 +20,13 @@ function ClientDetails() {
   const [topIndex, setTopIndex] = useState(0);
   const [bottomIndex, setBottomIndex] = useState(0);
   const [shoesIndex, setShoesIndex] = useState(0);
+  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
 
   const navigate = useNavigate();
+
+  if (!isLoggedIn) {
+    navigate('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+  }
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/customers/${id}`)

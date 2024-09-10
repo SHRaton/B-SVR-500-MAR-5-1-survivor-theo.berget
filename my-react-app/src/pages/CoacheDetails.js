@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import 'primeicons/primeicons.css';
 import './CoacheDetails.css';
+import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
 
 function CoacheDetails() {
   const { id } = useParams(); // Récupère l'ID du coache depuis l'URL
@@ -20,12 +21,17 @@ function CoacheDetails() {
   const [topIndex, setTopIndex] = useState(0);
   const [bottomIndex, setBottomIndex] = useState(0);
   const [shoesIndex, setShoesIndex] = useState(0);
+  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
 
   const navigate = useNavigate();
 
   const handleClick = (customerId) => {
     navigate(`/customers/${customerId}`);
   };
+
+  if (!isLoggedIn) {
+    navigate('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+  }
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/users/${id}`)
@@ -52,7 +58,7 @@ function CoacheDetails() {
   return (
     <div>
       <div className="top-bar">
-        <h1>Customer Details</h1>
+        <h1>Coach Details</h1>
         <div className="back" onClick={() => navigate("/coaches")}></div>
       </div>
       <div className="bloc-principal">

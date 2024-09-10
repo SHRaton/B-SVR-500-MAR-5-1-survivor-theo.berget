@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
 
 const EditCustomer = () => {
+  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
   const { id } = useParams();  // ID du client depuis l'URL
   const navigate = useNavigate();
-
+  
   // State pour stocker les informations du client
   const [customer, setCustomer] = useState({
     name: '',
@@ -19,7 +21,10 @@ const EditCustomer = () => {
     description: '',
     coach_id: null,
   });
-
+  
+  if (!isLoggedIn) {
+    navigate('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+  }
   // Charger les informations du client
   useEffect(() => {
     const fetchCustomer = async () => {

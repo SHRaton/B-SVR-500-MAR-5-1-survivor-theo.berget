@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
 
 const AssignCoach = () => {
   const { id } = useParams();  // ID du coach depuis l'URL
+  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
   const [customers, setCustomers] = useState([]);  // Liste des clients
   const [coaches, setCoaches] = useState(null);
   const [selectedCustomerId, setSelectedCustomerId] = useState(null); // Client sélectionné
   const navigate = useNavigate();
+  
+  if (!isLoggedIn) {
+    navigate('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+  }
 
   // Charger la liste des customers
   useEffect(() => {
