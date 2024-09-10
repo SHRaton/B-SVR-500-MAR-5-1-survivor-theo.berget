@@ -8,62 +8,56 @@
   position: fixed;
   top: 0;
   width: 100%;
-  height: 50px; /* Augmenté pour plus de verticalité */
+  height: 50px; 
   z-index: 1000;
 }
 
-/* Alignement de Soul connection à gauche */
 .site-name {
   font-size: 15px;
-  margin-right: auto;
   display: flex;
-  align-items: center; /* Centre verticalement le texte */
+  align-items: center;
 }
 
 .site-name h1 {
   margin: 0;
 }
 
-/* Espacement et centrage des éléments du milieu */
 .middle-nav {
   display: flex;
   justify-content: center;
-  align-items: center; /* Centre verticalement tous les éléments du milieu */
+  align-items: center;
   flex-grow: 1;
   font-size: 8px;
-  height: 100%; /* Prend toute la hauteur de la barre de navigation */
+  height: 100%;
 }
 
 .middle-nav div {
   display: flex;
-  align-items: center; /* Centre verticalement le texte dans chaque bouton */
+  align-items: center;
   justify-content: center;
   height: 100%;
   padding: 0 20px;
   cursor: pointer;
 }
 
-/* Style par défaut des boutons */
 .middle-nav h1 {
   margin: 0;
-  font-size: 16px; /* Ajustez la taille si nécessaire */
-  color: rgb(44, 67, 92); /* Couleur par défaut du texte */
-  position: relative; /* Nécessaire pour la pseudo-classe :after */
+  font-size: 16px;
+  color: rgb(44, 67, 92);
+  position: relative;
 }
 
-/* Ajouter la barre sous le texte actif */
 .middle-nav .active h1 {
-  color: rgb(46, 92, 187); /* Couleur bleue pour le texte actif */
-  border-bottom: 3px solid rgb(46, 92, 187); /* Barre sous le texte pour indiquer l'élément actif */
+  color: rgb(46, 92, 187);
+  border-bottom: 3px solid rgb(46, 92, 187);
   padding-top: 25px;
-  padding-bottom: 23px; /* Ajuster l'espacement entre le texte et la barre */
+  padding-bottom: 23px;
 }
 
 .middle-nav h1:hover {
-  color: #007bff; /* Couleur du texte au survol */
+  color: #007bff;
 }
 
-/* Alignement des éléments à droite */
 .right-nav {
   display: flex;
   align-items: center;
@@ -77,22 +71,20 @@
   gap: 30px;
 }
 
-/* Styles des boutons avec image de fond */
 .chat, .langue, .login {
   background-color: rgb(46, 92, 187);
-  background-size: cover; /* Ajuste la taille de l'image pour couvrir tout le bouton */
-  background-position: center; /* Centre l'image dans le bouton */
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   border: none;
-  padding: 0; /* Enlever le padding pour ne pas déformer l'image */
+  padding: 0;
   cursor: pointer;
   font-size: 16px;
-  border-radius: 50%; /* Arrondi complet pour obtenir un cercle */
-  width: 35px; /* Taille du bouton */
-  height: 35px; /* Taille du bouton */
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
 }
 
-/* Assurez-vous que les images sont correctement définies */
 .chat {
   border-radius: 0;
   background-color: transparent;
@@ -109,4 +101,71 @@
 
 .login:hover {
   background-color: #21a1f1;
+}
+
+/* Styles pour le burger menu */
+.burger-menu {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  width: 100px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(230, 230, 230); /* Rendre le bouton visible */
+  border-radius: 5px; /* Ajout d'arrondis */
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../pages/down.png");
+}
+
+.burger-menu div {
+  height: 3px;
+  background-color: white; /* Barres blanches pour contraste */
+  margin: 5px 0;
+  width: 100%;
+}
+
+/* Styles pour le menu déroulant */
+.dropdown-menu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  left: 60%;
+  transform: translateX(-50%);
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.dropdown-menu div {
+  padding: 15px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.dropdown-menu div:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 800px) {
+  .middle-nav {
+    display: none;
+  }
+  .burger-menu {
+    display: flex;
+  }
+  .dropdown-menu {
+    display: flex;
+  }
+  .chat {
+    display: none;
+  }
+  .langue {
+    display: none;
+  }
 }

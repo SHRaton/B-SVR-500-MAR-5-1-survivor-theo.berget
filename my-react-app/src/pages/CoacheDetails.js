@@ -23,6 +23,10 @@ function CoacheDetails() {
 
   const navigate = useNavigate();
 
+  const handleClick = (customerId) => {
+    navigate(`/customers/${customerId}`);
+  };
+
   useEffect(() => {
     fetch(`http://localhost:5000/api/users/${id}`)
       .then(response => response.json())
@@ -85,11 +89,18 @@ function CoacheDetails() {
             </div>
           </div>
         </div>
-        <div className="history">
+        <div className="historyDetails">
           {nbCustomers.map(customer => (
-            <div className="blocMain" key={customer.id}>
+            <div
+              className="blocDetails"
+              key={customer.id}
+              onClick={() => handleClick(customer.id)}
+            >
               <p>{customer.name}</p>
               <p>{customer.surname}</p>
+              <p>{customer.email}</p>
+              <p>{customer.phone_number}</p>
+              <p>{customer.astrological_sign}</p>
             </div>
           ))}
         </div>

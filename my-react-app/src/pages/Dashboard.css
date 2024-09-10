@@ -29,7 +29,7 @@
 
 .d1 {
     background-color: white;
-    width: 70%;
+    width: 50%;
     height: 90%;
     border-radius: 5px;
     border: 1px solid rgb(200, 200, 200);
@@ -38,7 +38,7 @@
 }
 .d2 {
     background-color: white;
-    width: 90%;
+    width: 50%;
     height: 90%;
     border-radius: 5px;
     border: 1px solid rgb(200, 200, 200);
@@ -47,7 +47,7 @@
 }
 .d3 {
     background-color: white;
-    width: 70%;
+    width: 50%;
     height: 90%;
     border-radius: 5px;
     border: 1px solid rgb(200, 200, 200);
@@ -75,4 +75,11 @@
     font-weight: bold;
     color: rgb(99, 119, 145);
     margin: 0;
+}
+
+.centerGraphContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }

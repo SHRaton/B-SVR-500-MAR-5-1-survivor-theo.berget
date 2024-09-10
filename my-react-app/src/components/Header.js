@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import './Header.css';
 
 function Header({ isLoggedIn, toggleLogin }) {
   const navigate = useNavigate();
-  const location = useLocation(); // Hook pour obtenir la route active
+  const location = useLocation(); 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLoginClick = () => {
     if (!isLoggedIn) {
@@ -14,18 +15,19 @@ function Header({ isLoggedIn, toggleLogin }) {
     }
   };
 
-  // Fonction pour vérifier si le chemin actuel correspond à celui passé en paramètre
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   const isActive = (path) => location.pathname === path;
   const isActivePartial = (path) => location.pathname.startsWith(path);
 
   return (
     <div className="header">
-      {/* Aligné à gauche */}
       <div className="site-name">
         <h1>Soul connection</h1>
       </div>
 
-      {/* Centré */}
       <div className="middle-nav">
         <div
           className={`${isActive("/") ? "active" : ""}`}
@@ -65,7 +67,26 @@ function Header({ isLoggedIn, toggleLogin }) {
         </div>
       </div>
 
-      {/* Aligné à droite */}
+      {/* Menu burger pour mobiles */}
+      <div className="burger-menu" onClick={toggleMenu}>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+
+      {isMenuOpen && (
+        <div className="dropdown-menu">
+          <div onClick={() => {navigate("/"); toggleMenu();}}>Dashboard</div>
+          <div onClick={() => {navigate("/coaches"); toggleMenu();}}>Coaches</div>
+          <div onClick={() => {navigate("/customers"); toggleMenu();}}>Customers</div>
+          <div onClick={() => {navigate("/tips"); toggleMenu();}}>Tips</div>
+          <div onClick={() => {navigate("/events"); toggleMenu();}}>Events</div>
+          <div onClick={() => {navigate("/astro"); toggleMenu();}}>Astro</div>
+          <div onClick={handleLoginClick}>Chat</div>
+          <div onClick={handleLoginClick}>Langue</div>
+        </div>
+      )}
+
       <div className="right-nav">
         <div className="login-button">
           <button className="chat" onClick={handleLoginClick}>

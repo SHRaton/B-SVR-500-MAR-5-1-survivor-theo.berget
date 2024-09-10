@@ -32,7 +32,12 @@ function ClientDetails() {
   useEffect(() => {
     fetch(`http://localhost:5000/api/encounters/${id}`)
       .then(response => response.json())
-      .then(data => setEncounters(data.data))
+      .then(data => {
+        // Trier les rencontres par date décroissante (les plus récentes en premier)
+        const sortedEncounters = data.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        // Garder seulement les 5 premières rencontres
+        setEncounters(sortedEncounters.slice(0, 5));
+      })
       .catch(error => console.error('Error fetching encounters:', error));
   }, [id]);
 
@@ -158,7 +163,44 @@ function ClientDetails() {
             </div>
           </div>
         </div>
-        <div className="history"></div>
+        <div className="historyClientDetails">
+          {/* Barre de titre */}
+          <div className="titleBar">
+            <div className="encounters1">
+              <p>Date</p>
+            </div>
+            <div className="encounters2">
+              <p>Rating</p>
+            </div>
+            <div className="encounters3">
+              <p>Comment</p>
+            </div>
+            <div className="encounters4">
+              <p>Source</p>
+            </div>
+          </div>
+          {/* Détails des rencontres */}
+          {encounters.map(encounter => (
+            <div
+              className="blocClientDetails"
+              key={encounter.id}
+            >
+              <div className="encounters1">
+                <p>{encounter.date}</p>
+              </div>
+              <div className="encounters2">
+                <p>{encounter.rating}</p>
+              </div>
+              <div className="encounters3">
+                <p>{encounter.comment}</p>
+              </div>
+              <div className="encounters4">
+                <p>{encounter.source}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
       </div>
       <div className="clothes">
         <div className="titleClothes">Choise of clothes</div>
