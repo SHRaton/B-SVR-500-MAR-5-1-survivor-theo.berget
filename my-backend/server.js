@@ -4,6 +4,7 @@ const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const app = express();
 const port = 5000;
+require('dotenv').config();
 
 // Configuration de la base de données
 const db = new sqlite3.Database('./database.db');
@@ -26,16 +27,16 @@ const initializeDatabase = () => {
 // Initialiser la base de données
 initializeDatabase();
 
-const baseUrl = 'https://soul-connection.fr/api/employees'; // Base URL pour récupérer un employé
-const clientUrl = 'https://soul-connection.fr/api/customers/';
-const eventUrl = 'https://soul-connection.fr/api/events/';
-const encounterUrl = 'https://soul-connection.fr/api/encounters/';
-const tipsUrl = 'https://soul-connection.fr/api/tips';
+const baseUrl = process.env.REACT_APP_BASE_URL; // Utiliser les variables d'environnement
+const clientUrl = process.env.REACT_APP_CLIENT_URL;
+const eventUrl = process.env.REACT_APP_EVENT_URL;
+const encounterUrl = process.env.REACT_APP_ENCOUNTER_URL;
+const tipsUrl = process.env.REACT_APP_TIPS_URL;
 
 const config = {
     headers: {
-        'X-Group-Authorization': '93aac6279a78460959c1118c15ec7e12',  // Clé API
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTg0NDE3fQ.zDR7OeZdu_6HOo9fj3h5FckZtc6R7OGEsTBcju8f6uk',
+        'X-Group-Authorization': process.env.REACT_APP_X_GROUP_AUTHORIZATION,  // Utiliser la clé API depuis .env
+        'Authorization': process.env.REACT_APP_AUTHORIZATION,
         'Content-Type': 'application/json'
     }
 };
