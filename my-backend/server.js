@@ -904,6 +904,19 @@ app.post('/api/addBlogs', (req, res) => {
     });
 });
 
+// Delete blog || DELETE METHOD
+app.delete('/api/deleteBlog/:id', (req, res) => {
+    const id = req.params.id;
+
+    db.run('DELETE FROM Blogs WHERE id = ?', [id], function(err) {
+        if (err) {
+            console.error("Erreur lors de la suppression de l'utilisateur:", err);
+            return res.status(500).send("Erreur lors de la suppression de l'utilisateur");
+        }
+        res.status(200).send({ id: this.lastID });
+    });
+});
+
 //Exécution des fonctions
 const populateData = async () => {
     await getAllEmployees();
