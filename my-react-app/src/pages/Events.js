@@ -6,10 +6,14 @@ import interactionPlugin from "@fullcalendar/interaction"; // Import the interac
 import L from 'leaflet'; // Import Leaflet
 import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS
 import './Events.css'; // Import your CSS file
+import Cookies from 'js-cookie';
+import { useNavigate } from "react-router-dom";
 
 function Events() {
   const [events, setEvents] = useState([]);
   const [map, setMap] = useState(null); // State to hold the map instance
+  const isLoggedIn = Cookies.get('isLoggedIn');
+  const navigate = useNavigate();
 
   // Fonction pour récupérer les événements depuis l'API
   useEffect(() => {

@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { GlobalContext } from '../GlobalContext'; // Import global context
+import Cookies from 'js-cookie';
 import './CoachAssign.css'; // Import the CSS for styling
 
 const AssignCoach = () => {
   const { id } = useParams();  // Coach ID from URL
-  const { isLoggedIn } = useContext(GlobalContext); // Access to global context
+  const isLoggedIn = Cookies.get('isLoggedIn');
   const [customers, setCustomers] = useState([]);  // List of customers
   const [coaches, setCoaches] = useState(null);
   const [selectedCustomerId, setSelectedCustomerId] = useState(null); // Selected customer

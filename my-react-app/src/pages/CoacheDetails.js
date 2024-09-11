@@ -2,30 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import 'primeicons/primeicons.css';
 import './CoacheDetails.css';
+import Cookies from 'js-cookie';
 
 function CoacheDetails() {
   const { id } = useParams(); // Récupère l'ID du coache depuis l'URL
   const [coaches, setCoaches] = useState(null);
-  const [encounters, setEncounters] = useState([]);
-  const [ratings, setRatings] = useState([]);
-  const [incomings, setIncomings] = useState([]);
-  const [top, setTop] = useState([]);
-  const [hat_cap, setHatCap] = useState([]);
-  const [bottom, setBottom] = useState([]);
-  const [shoes, setShoes] = useState([]);
   const [nbCustomers, setNbCustomers] = useState([]);
-
-  // État pour suivre l'index actif de chaque type de vêtement
-  const [hatCapIndex, setHatCapIndex] = useState(0);
-  const [topIndex, setTopIndex] = useState(0);
-  const [bottomIndex, setBottomIndex] = useState(0);
-  const [shoesIndex, setShoesIndex] = useState(0);
-
+  const isLoggedIn = Cookies.get('isLoggedIn');
   const navigate = useNavigate();
 
   const handleClick = (customerId) => {
     navigate(`/customers/${customerId}`);
   };
+
+  if (!isLoggedIn) {
+    navigate('/login');
+  }
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/users/${id}`)
@@ -39,7 +31,7 @@ function CoacheDetails() {
     fetch(`http://localhost:5000/api/customersByCoach/${id}`)
       .then(response => response.json())
       .then(data => setNbCustomers(data.data))
-      .catch(error => console.error('Error fetching shoes clothes:', error));
+      .catch(error => console.error('Error fetching customers:', error));
   }, [id]);
 
   if (!coaches) {

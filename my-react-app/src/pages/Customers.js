@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Customers.css';
+import Cookies from 'js-cookie';
 
 function Customers() {
   const [clients, setClients] = useState([]);
+  const isLoggedIn = Cookies.get('isLoggedIn');
   const [showMenu, setShowMenu] = useState(null); // Etat pour gérer le menu contextuel
   const navigate = useNavigate();
 

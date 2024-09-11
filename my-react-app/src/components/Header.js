@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import './Header.css';
-import { GlobalContext } from '../GlobalContext';
+import Cookies from 'js-cookie';
 
 function Header({ toggleLogin }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isLoggedIn } = useContext(GlobalContext);
+  const isLoggedIn = Cookies.get('isLoggedIn');
   const [coaches, setCoaches] = useState([]);
-  const { globalEmail, globalUserRole } = useContext(GlobalContext);
+  const globalEmail = Cookies.get('mail');
+  const globalUserRole = Cookies.get('mail');
 
   useEffect(() => {
     fetch('http://localhost:5000/api/users')

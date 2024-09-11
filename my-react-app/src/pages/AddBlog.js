@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate
 import './AddBlog.css';  // Import the CSS file
-import { GlobalContext } from '../GlobalContext'; // Import global context for email
+import Cookies from 'js-cookie';
 
 const AddBlog = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +11,8 @@ const AddBlog = () => {
   const [coaches, setCoaches] = useState([]);
   const [coachId, setCoachId] = useState(null);
   
-  const { globalEmail, globalUserRole } = useContext(GlobalContext);  // Get global email and role from context
+  const globalEmail = Cookies.get('mail');
+  const globalUserRole = Cookies.get('role');
   const navigate = useNavigate();  // Initialize useNavigate
 
   useEffect(() => {

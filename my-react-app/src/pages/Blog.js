@@ -2,13 +2,13 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import arrowDown from './down.png';
 import arrowUp from './up.png';
-import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
+import Cookies from 'js-cookie';
 import './Blog.css'; // Assurez-vous que le CSS est correctement importé
 
 function Blogs() {
   const [openIndex, setOpenIndex] = useState(null);
   const [searchTerm, setSearchTerm] = useState(''); // État pour la barre de recherche
-  const { isLoggedIn } = useContext(GlobalContext);
+  const isLoggedIn = Cookies.get('isLoggedIn');
   const [blogs, setBlogs] = useState([]);
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();

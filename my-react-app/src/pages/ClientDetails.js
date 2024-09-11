@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import 'primeicons/primeicons.css';
 import './ClientDetails.css';
-import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
+import Cookies from 'js-cookie';
 
 function ClientDetails() {
   const { id } = useParams(); // Récupère l'ID du client depuis l'URL
@@ -20,7 +20,7 @@ function ClientDetails() {
   const [topIndex, setTopIndex] = useState(0);
   const [bottomIndex, setBottomIndex] = useState(0);
   const [shoesIndex, setShoesIndex] = useState(0);
-  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
+  const isLoggedIn = Cookies.get('isLoggedIn');
 
   const navigate = useNavigate();
 
@@ -93,6 +93,13 @@ function ClientDetails() {
     return <div>Loading...</div>;
   }
 
+  // Fonction pour rediriger vers l'application de messagerie
+  const redirectMail = () => {
+    if (clients && clients.email) {
+      window.location.href = `mailto:${clients.email}`;
+    }
+  };
+
   // Fonctions pour changer l'index (carrousel)
   const handlePrev = (type) => {
     if (type === "hat_cap" && hat_cap.length > 0) {
@@ -102,7 +109,7 @@ function ClientDetails() {
     } else if (type === "bottom" && bottom.length > 0) {
       setBottomIndex((prev) => (prev - 1 + bottom.length) % bottom.length);
     } else if (type === "shoes" && shoes.length > 0) {
-      setShoesIndex((prev) => (prev - 1 + shoes.length) % shoes.length);
+      setShoesIndex((prev) => (prev + 1) % shoes.length);
     }
   };
 
@@ -124,13 +131,6 @@ function ClientDetails() {
   const customerTopUrl = top.length > 0 ? `/clothes/clothe_${top[topIndex].id}.png` : null;
   const customerBottomUrl = bottom.length > 0 ? `/clothes/clothe_${bottom[bottomIndex].id}.png` : null;
   const customerShoesUrl = shoes.length > 0 ? `/clothes/clothe_${shoes[shoesIndex].id}.png` : null;
-
-  // Fonction pour rediriger vers l'application de messagerie
-  const redirectMail = () => {
-    if (clients && clients.email) {
-      window.location.href = `mailto:${clients.email}`;
-    }
-  };
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
 import EventMap from './DashboardMap'; // Ensure this component is created to render the map
 
@@ -17,7 +17,7 @@ import {
   Cell,
   Legend
 } from 'recharts';
-import { GlobalContext } from '../GlobalContext';
+import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 
 const COLORS = [
@@ -34,7 +34,7 @@ function Dashboard() {
   const [encounters, setEncounters] = useState([]);
   const [sourceData, setSourceData] = useState([]);
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(GlobalContext);
+  const isLoggedIn = Cookies.get('isLoggedIn');
 
   // Redirect if user is not logged in
   if (!isLoggedIn) {

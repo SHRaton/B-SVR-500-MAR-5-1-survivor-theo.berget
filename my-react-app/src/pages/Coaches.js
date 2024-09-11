@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Coaches.css';
-import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
+import Cookies from 'js-cookie';
 
 function Coaches() {
-  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
-  const { globalEmail, globalUserRole } = useContext(GlobalContext); // Récupérez l'email et le rôle utilisateur depuis le contexte global
+  const isLoggedIn = Cookies.get('isLoggedIn');
+  const globalUserRole = Cookies.get('role');
+  const globalEmail = Cookies.get('mail');
   const [coaches, setCoaches] = useState([]);
   const [showMenu, setShowMenu] = useState(null);
   const navigate = useNavigate();

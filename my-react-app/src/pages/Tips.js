@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Tips.css'; // Assurez-vous que le CSS est correctement importé
 import { useNavigate } from 'react-router-dom';
 import arrowDown from './down.png';
 import arrowUp from './up.png';
-import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
+import Cookies from 'js-cookie';
 
 function Tips() {
   const [openIndex, setOpenIndex] = useState(null);
   const [searchTerm, setSearchTerm] = useState(''); // État pour la barre de recherche
-  const { isLoggedIn } = useContext(GlobalContext);
+  const isLoggedIn = Cookies.get('isLoggedIn');
   const [tips, setTips] = useState([]);
   const navigate = useNavigate();
 
