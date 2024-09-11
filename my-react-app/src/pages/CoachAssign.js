@@ -1,29 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Cookies from 'js-cookie';
+import { GlobalContext } from '../GlobalContext'; // Import global context
+import './CoachAssign.css'; // Import the CSS for styling
 
 const AssignCoach = () => {
-  const { id } = useParams();  // ID du coach depuis l'URL
-  const isLoggedIn = Cookies.get('isLoggedIn');  // Vérifiez si l'utilisateur est connecté
-  const [customers, setCustomers] = useState([]);  // Liste des clients
+  const { id } = useParams();  // Coach ID from URL
+  const { isLoggedIn } = useContext(GlobalContext); // Access to global context
+  const [customers, setCustomers] = useState([]);  // List of customers
   const [coaches, setCoaches] = useState(null);
-  const [selectedCustomerId, setSelectedCustomerId] = useState(null); // Client sélectionné
+  const [selectedCustomerId, setSelectedCustomerId] = useState(null); // Selected customer
   const navigate = useNavigate();
   
   if (!isLoggedIn) {
-    navigate('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    navigate('/login'); // Redirect to login if the user is not logged in
   }
 
-  // Charger la liste des customers
+  // Fetch customers
   useEffect(() => {
     fetch('http://localhost:5000/api/customers')
       .then(response => response.json())
       .then(data => setCustomers(data.data))
-      .catch(error => console.error('Error fetching users:', error));
+      .catch(error => console.error('Error fetching customers:', error));
   }, []);
 
-  // Récupére les infos du coach à partir de son ID
+  // Fetch coach info by ID
   useEffect(() => {
     fetch(`http://localhost:5000/api/coaches/${id}`)
       .then(response => response.json())
@@ -31,7 +32,7 @@ const AssignCoach = () => {
       .catch(error => console.error('Error fetching coach:', error));
   }, [id]);
 
-  // Gestion du clic sur le bouton "Link"
+  // Handle customer assignment
   const handleLinkCustomer = async () => {
     if (!selectedCustomerId) {
       alert('Veuillez sélectionner un client');
@@ -39,7 +40,7 @@ const AssignCoach = () => {
     }
 
     try {
-      // Mettre à jour le coach_id du client sélectionné
+      // Update customer's coach_id
       await axios.put(`http://localhost:5000/api/addCoachToCustomer/${selectedCustomerId}`, { coach_id: id });
       alert('Le client a été assigné au coach avec succès!');
       navigate(`/coaches/${id}`);
@@ -49,10 +50,11 @@ const AssignCoach = () => {
     }
   };
 
+  // Filter customers with no assigned coach
   const availableCustomers = customers.filter(customer => customer.coach_id === null);
 
   return (
-    <div>
+    <div className="assign-container">
       <h2>Assignation des clients au coach : {coaches?.name}</h2>
       <div>
         <label htmlFor="customer-select">Sélectionner un client :</label>

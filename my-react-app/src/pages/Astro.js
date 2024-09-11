@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Astro.css';
-import Cookies from 'js-cookie';
+import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
+
 
 function CompatibilityAnalysis() {
   const [clients, setClients] = useState([]); // Stocke tous les clients
@@ -9,7 +10,7 @@ function CompatibilityAnalysis() {
   const [selectedClient2, setSelectedClient2] = useState(null); // Deuxième client sélectionné
   const [compatibilityResult, setCompatibilityResult] = useState(""); // Résultat de la compatibilité
   const [percentageResult, setPercentageResult] = useState("");
-  const isLoggedIn = Cookies.get('isLoggedIn'); // Vérifiez si l'utilisateur est connecté
+  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
   const navigate = useNavigate();
   
   useEffect(() => {

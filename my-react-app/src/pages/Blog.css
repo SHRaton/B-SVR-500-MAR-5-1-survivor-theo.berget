@@ -1,0 +1,8 @@
+.tip-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.published {
+  font-weight: bold;
+}

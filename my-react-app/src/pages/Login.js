@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import Cookies from 'js-cookie';
+import { GlobalContext } from '../GlobalContext'; // Importez le contexte
 
 const Login = () => {
+  const { setGlobalEmail, setGlobalUserRole, isLoggedIn, setIsLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -25,13 +26,12 @@ const Login = () => {
     setPasswordError('');
 
     if (email === "admin-12458456455452295465@admin.okokokokok") {
-      Cookies.set('role', "admin", { expires: 1 });
-      Cookies.set('mail', 'admin-12458456455452295465@admin.okokokokok', { expires: 1 });
-      Cookies.set('isLoggedIn', true, { expires: 1 });
+      setGlobalEmail(email);
+      setGlobalUserRole('Admin');
+      setIsLoggedIn(true);
       navigate('/dashboard');
       return;
     }
-    
     // Valider les champs
     if (email === '') {
       setEmailError('Email requis');
@@ -51,17 +51,17 @@ const Login = () => {
       setPasswordError('Email ou mot de passe incorrect');
     } else {
       // Définir l'état global et rediriger vers le tableau de bord
-      Cookies.set('mail', email, { expires: 1 });
-      Cookies.set('role', user.work, { expires: 1 });
-      Cookies.set('isLoggedIn', true, { expires: 1 });
+      setGlobalEmail(email);
+      setGlobalUserRole(user.work === 'Coach' ? 'Coach' : 'Manager');
+      setIsLoggedIn(true); // Définir l'utilisateur comme connecté
       navigate('/dashboard');
     }
   };
 
   const onLogout = () => {
-    Cookies.remove('mail');
-    Cookies.remove('role');
-    Cookies.remove('isLoggedIn');
+    setGlobalEmail(''); // Réinitialiser l'email global
+    setGlobalUserRole(''); // Réinitialiser le rôle utilisateur
+    setIsLoggedIn(false); // Définir l'utilisateur comme déconnecté
     navigate('/login'); // Rediriger vers la page de connexion
   };
 
@@ -70,7 +70,7 @@ const Login = () => {
   };
 
   // Si l'utilisateur est connecté, afficher un bouton de déconnexion
-  if (Cookies.get('isLoggedIn')) {
+  if (isLoggedIn) {
     return (
       <div className="mainContainer">
         <h2>Vous êtes connecté</h2>

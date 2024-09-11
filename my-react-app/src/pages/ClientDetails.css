@@ -6,11 +6,12 @@
 }
 
 .back {
-    height: 50px;
+    height: 51px;
     width: 133px;
     background-image: url("./back.png");
     background-size: cover;
     transition: transform 0.3s;
+    border-radius: 5px;
 }
 
 .back:hover {

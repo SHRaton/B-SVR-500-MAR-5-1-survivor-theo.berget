@@ -15,6 +15,8 @@ import ResultPage from './pages/ResultPage'
 import CoachAssign from "./pages/CoachAssign"
 import AddCoaches from "./pages/AddCoaches"
 import EditCustomers from "./pages/EditCustomers"
+import Blog from "./pages/Blog"
+import AddBlog from "./pages/AddBlog"
 
 import './App.css';
 
@@ -40,6 +42,8 @@ function App() {
             <Route path="/AddCoaches" element={<AddCoaches />} />
             <Route path="/customers/:id/edit" element={<EditCustomers />} />
             <Route path="/result" element={<ResultPage />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/AddBlog" element={<AddBlog />} />
           </Routes>
         </div>
       </div>

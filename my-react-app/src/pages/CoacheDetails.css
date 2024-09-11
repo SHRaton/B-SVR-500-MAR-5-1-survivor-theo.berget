@@ -1,7 +1,6 @@
 .historyDetails {
   display: flex;
   flex-direction: column;
-  display: flex;
   height: 80%;
   width: 100%;
   margin-left: 50px;
@@ -9,7 +8,8 @@
   border-radius: 5px;
   border: 2px solid rgb(230, 230, 230);
   gap: 5px; /* Espace entre les blocs */
-  margin: 20px;
+  max-height: 600px; /* Limite la hauteur de la div */
+  overflow-y: auto; /* Ajoute le défilement vertical si plus de contenu */
 }
 
 .blocDetails {

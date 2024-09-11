@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Cookies from 'js-cookie';
+import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
 
 const EditCustomer = () => {
-  const isLoggedIn = Cookies.get('isLoggedIn'); // Vérifiez si l'utilisateur est connecté
+  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
   const { id } = useParams();  // ID du client depuis l'URL
   const navigate = useNavigate();
   

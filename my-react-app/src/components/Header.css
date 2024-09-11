@@ -18,6 +18,12 @@
   align-items: center;
 }
 
+
+.site-name:hover {
+  cursor: pointer;
+  animation: heartbeat 3s infinite;
+}
+
 .site-name h1 {
   margin: 0;
 }
@@ -90,6 +96,9 @@
   background-color: transparent;
   background-image: url('chat.png');
 }
+.chat:hover {
+  cursor: pointer;
+}
 
 .langue {
   background-image: url('flag.png');
@@ -152,7 +161,11 @@
   border-bottom: none;
 }
 
-@media (max-width: 800px) {
+.nameHeader {
+  font-weight: bold;
+}
+
+@media (max-width: 1200px) {
   .middle-nav {
     display: none;
   }
@@ -163,6 +176,9 @@
     display: flex;
   }
   .chat {
+    display: none;
+  }
+  .nameHeader {
     display: none;
   }
   .langue {

@@ -1,10 +1,22 @@
+.search-bar {
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  margin-top: 50px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 .tips-container {
   color: rgb(44, 67, 92);
-  padding: 0px;
 }
 
 .tips-list {
   margin-top: 20px;
+  width: 96%;
 }
 
 .tip-header {

@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './Dashboard.css';
+import EventMap from './DashboardMap'; // Ensure this component is created to render the map
+
 import {
-  PieChart,
-  Pie,
-  Cell,
-  AreaChart,
+  ComposedChart,
   Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  ComposedChart,
-  Line,
-  Bar,
-  Legend,
   BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  Legend
 } from 'recharts';
-import { curveCardinal } from 'd3-shape';
-import Cookies from 'js-cookie';
+import { GlobalContext } from '../GlobalContext';
 import { useNavigate } from "react-router-dom";
-
 
 const COLORS = [
   '#8c65ff', '#f6e571', '#ff98ce', '#c495ff',
@@ -36,9 +34,9 @@ function Dashboard() {
   const [encounters, setEncounters] = useState([]);
   const [sourceData, setSourceData] = useState([]);
   const navigate = useNavigate();
-  const isLoggedIn = Cookies.get('isLoggedIn');
+  const { isLoggedIn } = useContext(GlobalContext);
 
-  // Redirection si l'utilisateur n'est pas connecté
+  // Redirect if user is not logged in
   if (!isLoggedIn) {
     navigate('/login');
   }
@@ -49,9 +47,6 @@ function Dashboard() {
       .then(data => {
         setEvents(data.data);
         console.log('Fetched events:', data.data);
-        data.data.forEach(event => {
-          console.log('Event date:', event.date);
-        });
       })
       .catch(error => console.error('Error fetching events:', error));
   }, []);
@@ -62,9 +57,6 @@ function Dashboard() {
       .then(data => {
         setCustomers(data.data);
         console.log('Fetched customers:', data.data);
-        data.data.forEach(customer => {
-          console.log('Customer astrological sign:', customer.astrological_sign);
-        });
       })
       .catch(error => console.error('Error fetching customers:', error));
   }, []);
@@ -75,7 +67,7 @@ function Dashboard() {
       .then(data => {
         setEncounters(data.data);
         console.log('Fetched encounters:', data.data);
-        // Comptage des sources de réunion
+        // Count encounter sources
         const sourceCount = {};
         data.data.forEach(encounter => {
           const source = encounter.source;
@@ -84,19 +76,19 @@ function Dashboard() {
           }
         });
 
-        // Préparer les données pour le graphique en camembert
+        // Prepare data for pie chart
         const sourceData = Object.keys(sourceCount).map(source => ({
           name: source,
           value: sourceCount[source],
         }));
 
-        // Mettre à jour l'état des données pour le graphique en camembert
+        // Update state with pie chart data
         setSourceData(sourceData);
       })
       .catch(error => console.error('Error fetching encounters:', error));
   }, []);
 
-  // Initialisation des données pour les événements
+  // Initialize data for events by month
   const dataEvents = [
     { name: 'January', value: 0 },
     { name: 'February', value: 0 },
@@ -112,14 +104,14 @@ function Dashboard() {
     { name: 'December', value: 0 },
   ];
 
-  // Comptage des événements par mois
+  // Count events by month
   events.forEach(event => {
     const date = new Date(event.date);
     const month = date.getMonth();
     dataEvents[month].value += 1;
   });
 
-  // Comptage des signes astrologiques
+  // Count astrological signs
   const astrologicalSignCount = {};
   customers.forEach(customer => {
     const sign = customer.astrological_sign;
@@ -128,45 +120,24 @@ function Dashboard() {
     }
   });
 
-  // Préparer les données pour le graphique des signes astrologiques
+  // Prepare data for astrological sign bar chart
   const astrologicalSignData = Object.keys(astrologicalSignCount).map(sign => ({
     name: sign,
     value: astrologicalSignCount[sign],
   }));
 
-  // Mock data for area chart
-  const areaData = [
-    { name: 'Doing Meeting', uv: 4000, pv: 2400, amt: 2400 },
-    { name: 'Today', uv: 3000, pv: 1398, amt: 2210 },
-  ];
-
   return (
     <div>
-      <h1>Dashboard</h1>
-      <p>Welcome!</p>
+      <div className='top-bar'>
+        <h1>Dashboard</h1>
+      </div>
+      <p className='subtitleCustom'>Welcome!</p>
       <div className="mainContainerDash">
         <div className="bloc1">
           <div className="d1">
-            <p className="titleDash">Customers Overview</p>
-            <p className="subtitleDash">When customers have joined in the time.</p>
-            <ResponsiveContainer width="90%" height={300}>
-              <AreaChart
-                data={areaData}
-                margin={{
-                  top: 30,
-                  right: 30,
-                  left: 0,
-                  bottom: 30,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" fillOpacity={0.3} />
-                <Area type={curveCardinal.tension(0.2)} dataKey="pv" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.3} />
-              </AreaChart>
-            </ResponsiveContainer>
+            <p className="titleDash">Event Distribution in France</p>
+            <p className="subtitleDash">Event locations based on regions in France.</p>
+            <EventMap events={events} />
           </div>
           <div className="d2">
             <p className="titleDash">Events by Month</p>
@@ -189,7 +160,6 @@ function Dashboard() {
                 <Area type="monotone" dataKey="value" stroke="#ff7300" fill="#ff7300" fillOpacity={0.3} />
               </ComposedChart>
             </ResponsiveContainer>
-
           </div>
         </div>
         <div className="bloc2">
@@ -209,15 +179,13 @@ function Dashboard() {
           <div className="d4">
             <p className="titleDash">Meetings Top Sources</p>
             <p className="subtitleDash">Distribution of meeting sources.</p>
-
-            {/* Nouveau conteneur pour centrer le graphique */}
             <div className="centerGraphContainer">
               <ResponsiveContainer width={200} height={200}>
                 <PieChart>
                   <Pie
                     data={sourceData}
-                    cx="50%" // Centrer horizontalement
-                    cy="50%" // Centrer verticalement
+                    cx="50%" // Center horizontally
+                    cy="50%" // Center vertically
                     innerRadius={40}
                     outerRadius={100}
                     fill="#8884d8"

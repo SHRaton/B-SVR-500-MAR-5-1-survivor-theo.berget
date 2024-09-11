@@ -1,32 +1,33 @@
 .calendar-container {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .boxEvent {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 800px;
-    background-color: white;
-  }
-  
-  .gaucheEvent {
-    height: 100%;
-    width: 50%;
-    padding: 20px;
-  }
-  
-  .droiteEvent {
-    height: 90%;
-    width: 50%;
-    padding: 20px;
-  }
-  
-  .event-info {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    margin-bottom: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+}
+
+.boxEvent {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 800px;
+  margin-top: 50px;
+  background-color: white;
+}
+
+.gaucheEvent {
+  height: 100%;
+  width: 50%;
+  padding: 20px;
+}
+
+.droiteEvent {
+  height: 90%;
+  width: 50%;
+  padding: 20px;
+}
+
+.event-info {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+}
