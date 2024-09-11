@@ -10,13 +10,14 @@ function Coaches() {
   const [coaches, setCoaches] = useState([]);
   const [showMenu, setShowMenu] = useState(null);
   const navigate = useNavigate();
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   if (!isLoggedIn) {
     navigate('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
   }
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/users')
+    fetch(`${urlDB}/api/users`)
       .then(response => response.json())
       .then(data => setCoaches(data.data))
       .catch(error => console.error('Error fetching users:', error));
@@ -36,7 +37,7 @@ function Coaches() {
 
   const handleDeleteCoach = async (coachId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/deleteUser/${coachId}`, {
+      const response = await fetch(`${urlDB}/api/deleteUser/${coachId}`, {
         method: 'DELETE',
       });
       if (response.ok) {

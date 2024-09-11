@@ -23,12 +23,13 @@ const UserForm = () => {
       [e.target.name]: e.target.value,
     });
   };
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-        const response = await fetch('http://localhost:5000/api/addCustomer', {
+        const response = await fetch(`${urlDB}/api/addCustomer`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

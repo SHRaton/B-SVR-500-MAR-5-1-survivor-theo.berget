@@ -7,6 +7,7 @@ const EditCustomer = () => {
   const isLoggedIn = Cookies.get('isLoggedIn');
   const { id } = useParams();  // ID du client depuis l'URL
   const navigate = useNavigate();
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   // State pour stocker les informations du client
   const [customer, setCustomer] = useState({
@@ -29,7 +30,7 @@ const EditCustomer = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/customers/${id}`);
+        const response = await axios.get(`${urlDB}/api/customers/${id}`);
         setCustomer(response.data.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des informations du client', error);
@@ -53,7 +54,7 @@ const EditCustomer = () => {
     e.preventDefault();
 
     try {
-      await axios.put(`http://localhost:5000/api/customersEdit/${id}`, customer);
+      await axios.put(`${urlDB}/api/customersEdit/${id}`, customer);
       alert('Les informations du client ont été mises à jour avec succès!');
       navigate('/customers');  // Redirection après la mise à jour
     } catch (error) {

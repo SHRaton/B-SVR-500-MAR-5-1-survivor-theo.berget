@@ -10,6 +10,7 @@ function CoacheDetails() {
   const [nbCustomers, setNbCustomers] = useState([]);
   const isLoggedIn = Cookies.get('isLoggedIn');
   const navigate = useNavigate();
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   const handleClick = (customerId) => {
     navigate(`/customers/${customerId}`);
@@ -20,7 +21,7 @@ function CoacheDetails() {
   }
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/users/${id}`)
+    fetch(`${urlDB}/api/users/${id}`)
       .then(response => response.json())
       .then(data => setCoaches(data.data))
       .catch(error => console.error('Error fetching users:', error));
@@ -28,7 +29,7 @@ function CoacheDetails() {
 
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/customersByCoach/${id}`)
+    fetch(`${urlDB}/api/customersByCoach/${id}`)
       .then(response => response.json())
       .then(data => setNbCustomers(data.data))
       .catch(error => console.error('Error fetching customers:', error));

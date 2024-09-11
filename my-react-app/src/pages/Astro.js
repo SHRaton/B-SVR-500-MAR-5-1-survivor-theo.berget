@@ -11,10 +11,11 @@ function CompatibilityAnalysis() {
   const [percentageResult, setPercentageResult] = useState("");
   const isLoggedIn = Cookies.get('isLoggedIn');
   const navigate = useNavigate();
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   useEffect(() => {
     // Fetch tous les clients
-    fetch(`http://localhost:5000/api/customers`)
+    fetch(`${urlDB}/api/customers`)
     .then(response => response.json())
     .then(data => setClients(data.data))
     .catch(error => console.error('Error fetching clients:', error));

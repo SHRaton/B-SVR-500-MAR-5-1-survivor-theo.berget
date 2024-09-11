@@ -14,10 +14,11 @@ const AddBlog = () => {
   const globalEmail = Cookies.get('mail');
   const globalUserRole = Cookies.get('role');
   const navigate = useNavigate();  // Initialize useNavigate
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   useEffect(() => {
     // Fetch the list of coaches from /api/users
-    fetch('http://localhost:5000/api/users')
+    fetch(`${urlDB}/api/users`)
       .then(response => response.json())
       .then(data => {
         const filteredCoaches = globalUserRole === 'Coach' 
@@ -51,7 +52,7 @@ const AddBlog = () => {
       coach_id: coachId,
     };
     try {
-      const response = await fetch(`http://localhost:5000/api/addBlogs`, {
+      const response = await fetch(`${urlDB}/api/addBlogs`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

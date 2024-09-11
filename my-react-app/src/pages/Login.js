@@ -11,9 +11,11 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+  const adminMail = process.env.REACT_APP_ADMIN_EMAIL;
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/users') // URL correcte
+    fetch(`${urlDB}/api/users`) // URL correcte
       .then(response => response.json())
       .then(data => setUsers(data.data))
       .catch(error => console.error('Erreur lors de la récupération des utilisateurs :', error));
@@ -23,14 +25,16 @@ const Login = () => {
     // Réinitialise les erreurs
     setEmailError('');
     setPasswordError('');
-
-    if (email === "admin-12458456455452295465@admin.okokokokok") {
-      Cookies.set('role', "admin", { expires: 1});
-      Cookies.set('mail', "admin-12458456455452295465@admin.okokokokok", { expires: 1});
-      Cookies.set('isLoggedIn', true, { expires: 1});
+  
+    if (email === adminMail) {
+      Cookies.set('role', "admin", { expires: 1 });
+      Cookies.set('mail', adminMail, { expires: 1 });
+      Cookies.set('isLoggedIn', true, { expires: 1 });
+      Cookies.set('name', "Admin", { expires: 1 });
       navigate('/dashboard');
       return;
     }
+  
     // Valider les champs
     if (email === '') {
       setEmailError('Email requis');
@@ -41,26 +45,30 @@ const Login = () => {
     if (email === '' || password === '') {
       return;
     }
-
+  
     // Trouver l'utilisateur dans le tableau users
     const user = users.find(user => user.email === email);
-
+  
+    // Vérifier si l'utilisateur existe
     if (!user) {
       setEmailError('Email ou mot de passe incorrect');
       setPasswordError('Email ou mot de passe incorrect');
-    } else {
-      // Définir l'état global et rediriger vers le tableau de bord
-      Cookies.set('mail', email, { expires: 1});
-      Cookies.set('role', user.work, { expires: 1});
-      Cookies.set('isLoggedIn', true, { expires: 1});
-      navigate('/dashboard');
+      return;  // Arrêter ici si l'utilisateur n'est pas trouvé
     }
+  
+    // Définir l'état global et rediriger vers le tableau de bord
+    Cookies.set('mail', email, { expires: 1 });
+    Cookies.set('role', user.work, { expires: 1 });
+    Cookies.set('isLoggedIn', true, { expires: 1 });
+    Cookies.set('name', user.name, { expires: 1 });
+    navigate('/dashboard');
   };
-
+  
   const onLogout = () => {
     Cookies.remove('mail');
     Cookies.remove('role');
     Cookies.remove('isLoggedIn');
+    Cookies.remove('name');
     navigate('/login');
   };
 

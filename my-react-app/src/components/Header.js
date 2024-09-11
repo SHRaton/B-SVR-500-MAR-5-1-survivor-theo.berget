@@ -10,10 +10,12 @@ function Header({ toggleLogin }) {
   const isLoggedIn = Cookies.get('isLoggedIn');
   const [coaches, setCoaches] = useState([]);
   const globalEmail = Cookies.get('mail');
-  const globalUserRole = Cookies.get('mail');
+  const globalUserRole = Cookies.get('role');
+  const globalName = Cookies.get('name');
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/users')
+    fetch(`${urlDB}/api/users`)
       .then(response => response.json())
       .then(data => setCoaches(data.data))
       .catch(error => console.error('Error fetching users:', error));
@@ -43,9 +45,15 @@ function Header({ toggleLogin }) {
   const isActivePartial = (path) => location.pathname.startsWith(path);
 
 
-  const filteredCoaches = globalUserRole === 'Coach' ? 
-    coaches.filter(coach => coach.email === globalEmail) : 
+  const filteredCoaches = globalUserRole === 'Coach' ?
+    coaches.filter(coach => coach.email === globalEmail) :
     coaches;
+
+  const getName = () => {
+    const globalName = Cookies.get('name');
+    console.log(globalName);
+    return globalName ? globalName : 'Invité'; // Retourne 'Invité' si le cookie 'name' n'existe pas
+  };
 
   return (
     <div className="header">
@@ -126,7 +134,7 @@ function Header({ toggleLogin }) {
           </button>
           {isLoggedIn && (
             <div className="nameHeader">
-              <p>{filteredCoaches[0].name} {filteredCoaches[0].surname}</p>
+              <p>{getName()}</p>
             </div>
           )}
           <button className="login" onClick={handleLoginClick}>

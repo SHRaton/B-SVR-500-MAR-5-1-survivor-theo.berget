@@ -11,14 +11,15 @@ const AssignCoach = () => {
   const [coaches, setCoaches] = useState(null);
   const [selectedCustomerId, setSelectedCustomerId] = useState(null); // Selected customer
   const navigate = useNavigate();
-  
+  const urlDB = process.env.REACT_APP_DB_URL;
+
   if (!isLoggedIn) {
     navigate('/login'); // Redirect to login if the user is not logged in
   }
 
   // Fetch customers
   useEffect(() => {
-    fetch('http://localhost:5000/api/customers')
+    fetch(`${urlDB}/api/customers`)
       .then(response => response.json())
       .then(data => setCustomers(data.data))
       .catch(error => console.error('Error fetching customers:', error));
@@ -26,7 +27,7 @@ const AssignCoach = () => {
 
   // Fetch coach info by ID
   useEffect(() => {
-    fetch(`http://localhost:5000/api/coaches/${id}`)
+    fetch(`${urlDB}/api/coaches/${id}`)
       .then(response => response.json())
       .then(data => setCoaches(data.data))
       .catch(error => console.error('Error fetching coach:', error));
@@ -41,7 +42,7 @@ const AssignCoach = () => {
 
     try {
       // Update customer's coach_id
-      await axios.put(`http://localhost:5000/api/addCoachToCustomer/${selectedCustomerId}`, { coach_id: id });
+      await axios.put(`${urlDB}/api/addCoachToCustomer/${selectedCustomerId}`, { coach_id: id });
       alert('Le client a été assigné au coach avec succès!');
       navigate(`/coaches/${id}`);
     } catch (error) {

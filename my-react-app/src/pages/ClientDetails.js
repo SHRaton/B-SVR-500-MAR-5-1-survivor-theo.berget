@@ -23,20 +23,21 @@ function ClientDetails() {
   const isLoggedIn = Cookies.get('isLoggedIn');
 
   const navigate = useNavigate();
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   if (!isLoggedIn) {
     navigate('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
   }
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/customers/${id}`)
+    fetch(`${urlDB}/api/customers/${id}`)
       .then(response => response.json())
       .then(data => setClients(data.data))
       .catch(error => console.error('Error fetching users:', error));
   }, [id]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/encounters/${id}`)
+    fetch(`${urlDB}/api/encounters/${id}`)
       .then(response => response.json())
       .then(data => {
         // Trier les rencontres par date décroissante (les plus récentes en premier)
@@ -48,42 +49,42 @@ function ClientDetails() {
   }, [id]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/encounters/rating/${id}`)
+    fetch(`${urlDB}/api/encounters/rating/${id}`)
       .then(response => response.json())
       .then(data => setRatings(data.data))
       .catch(error => console.error('Error fetching ratings:', error));
   }, [id]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/encounters/not-pass/${id}`)
+    fetch(`${urlDB}/api/encounters/not-pass/${id}`)
       .then(response => response.json())
       .then(data => setIncomings(data.data))
       .catch(error => console.error('Error fetching incomings:', error));
   }, [id]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/customers/${id}/clothes/top`)
+    fetch(`${urlDB}/api/customers/${id}/clothes/top`)
       .then(response => response.json())
       .then(data => setTop(data.data))
       .catch(error => console.error('Error fetching top clothes:', error));
   }, [id]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/customers/${id}/clothes/hat-cap`)
+    fetch(`${urlDB}/api/customers/${id}/clothes/hat-cap`)
       .then(response => response.json())
       .then(data => setHatCap(data.data))
       .catch(error => console.error('Error fetching hat-cap clothes:', error));
   }, [id]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/customers/${id}/clothes/bottom`)
+    fetch(`${urlDB}/api/customers/${id}/clothes/bottom`)
       .then(response => response.json())
       .then(data => setBottom(data.data))
       .catch(error => console.error('Error fetching bottom clothes:', error));
   }, [id]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/customers/${id}/clothes/shoes`)
+    fetch(`${urlDB}/api/customers/${id}/clothes/shoes`)
       .then(response => response.json())
       .then(data => setShoes(data.data))
       .catch(error => console.error('Error fetching shoes clothes:', error));

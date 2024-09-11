@@ -14,10 +14,15 @@ function Events() {
   const [map, setMap] = useState(null); // State to hold the map instance
   const isLoggedIn = Cookies.get('isLoggedIn');
   const navigate = useNavigate();
+  const urlDB = process.env.REACT_APP_DB_URL;
+
+  if (!isLoggedIn) {
+    navigate('/login');
+  }
 
   // Fonction pour récupérer les événements depuis l'API
   useEffect(() => {
-    fetch('http://localhost:5000/api/events')
+    fetch(`${urlDB}/api/events`)
       .then(response => response.json())
       .then(data => {
         // Convertir les événements de l'API au format FullCalendar

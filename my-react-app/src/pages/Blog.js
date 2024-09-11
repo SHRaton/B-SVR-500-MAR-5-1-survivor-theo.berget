@@ -16,6 +16,7 @@ function Blogs() {
   const toggleDropdown = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   if (!isLoggedIn) {
     navigate('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
@@ -23,7 +24,7 @@ function Blogs() {
 
   // Utilisation de useEffect pour récupérer tous les tips depuis le backend
   useEffect(() => {
-    fetch('http://localhost:5000/api/blogs')
+    fetch(`${urlDB}/api/blogs`)
       .then(response => response.json())
       .then(data => setBlogs(data.data)) // Récupérer tous les tips sans limite
       .catch(error => console.error('Error fetching tips:', error));
@@ -31,7 +32,7 @@ function Blogs() {
 
   // Utilisation de useEffect pour récupérer tous les tips depuis le backend
   useEffect(() => {
-    fetch('http://localhost:5000/api/users')
+    fetch(`${urlDB}/api/users`)
       .then(response => response.json())
       .then(data => setUsers(data.data)) // Récupérer tous les tips sans limite
       .catch(error => console.error('Error fetching tips:', error));
@@ -54,7 +55,7 @@ function Blogs() {
 
   const handleDeleteBlog = async (blogId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/deleteBlog/${blogId}`, {
+      const response = await fetch(`${urlDB}/api/deleteBlog/${blogId}`, {
         method: 'DELETE',
       });
       if (response.ok) {

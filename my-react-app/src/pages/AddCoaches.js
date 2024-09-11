@@ -20,12 +20,13 @@ const AddCoaches = () => {
       [e.target.name]: e.target.value,
     });
   };
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-        const response = await fetch('http://localhost:5000/api/addCoach', {
+        const response = await fetch(`${urlDB}/api/addCoach`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

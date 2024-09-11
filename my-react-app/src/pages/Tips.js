@@ -11,6 +11,7 @@ function Tips() {
   const isLoggedIn = Cookies.get('isLoggedIn');
   const [tips, setTips] = useState([]);
   const navigate = useNavigate();
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   const toggleDropdown = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -22,7 +23,7 @@ function Tips() {
 
   // Utilisation de useEffect pour récupérer tous les tips depuis le backend
   useEffect(() => {
-    fetch('http://localhost:5000/api/tips')
+    fetch(`${urlDB}/api/tips`)
       .then(response => response.json())
       .then(data => setTips(data.data)) // Récupérer tous les tips sans limite
       .catch(error => console.error('Error fetching tips:', error));

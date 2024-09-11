@@ -35,6 +35,7 @@ function Dashboard() {
   const [sourceData, setSourceData] = useState([]);
   const navigate = useNavigate();
   const isLoggedIn = Cookies.get('isLoggedIn');
+  const urlDB = process.env.REACT_APP_DB_URL;
 
   // Redirect if user is not logged in
   if (!isLoggedIn) {
@@ -42,7 +43,7 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/events')
+    fetch(`${urlDB}/api/events`)
       .then(response => response.json())
       .then(data => {
         setEvents(data.data);
@@ -52,7 +53,7 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/customers')
+    fetch(`${urlDB}/api/customers`)
       .then(response => response.json())
       .then(data => {
         setCustomers(data.data);
@@ -62,7 +63,7 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/encounters')
+    fetch(`${urlDB}/api/encounters`)
       .then(response => response.json())
       .then(data => {
         setEncounters(data.data);

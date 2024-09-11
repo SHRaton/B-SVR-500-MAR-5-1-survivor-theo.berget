@@ -8,9 +8,14 @@ function Customers() {
   const isLoggedIn = Cookies.get('isLoggedIn');
   const [showMenu, setShowMenu] = useState(null); // Etat pour gérer le menu contextuel
   const navigate = useNavigate();
+  const urlDB = process.env.REACT_APP_DB_URL;
+
+  if(!isLoggedIn) {
+    navigate('/login');
+  }
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/customers')
+    fetch(`${urlDB}/api/customers`)
       .then(response => response.json())
       .then(data => setClients(data.data))
       .catch(error => console.error('Error fetching users:', error));
@@ -26,7 +31,7 @@ function Customers() {
 
   const handleDeleteClient = async (clientId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/deleteCustomer/${clientId}`, {
+      const response = await fetch(`${urlDB}/api/deleteCustomer/${clientId}`, {
         method: 'DELETE',
       });
 
