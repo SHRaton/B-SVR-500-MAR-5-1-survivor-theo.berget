@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext} from 'react';
+import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
 import {
   PieChart,
@@ -18,7 +18,7 @@ import {
   BarChart,
 } from 'recharts';
 import { curveCardinal } from 'd3-shape';
-import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
+import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 
 
@@ -36,7 +36,7 @@ function Dashboard() {
   const [encounters, setEncounters] = useState([]);
   const [sourceData, setSourceData] = useState([]);
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
+  const isLoggedIn = Cookies.get('isLoggedIn');
 
   // Redirection si l'utilisateur n'est pas connecté
   if (!isLoggedIn) {

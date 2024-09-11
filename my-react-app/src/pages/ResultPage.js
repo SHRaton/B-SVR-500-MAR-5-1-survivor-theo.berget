@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
+import React from 'react';
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 function ResultPage() {
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
+  const isLoggedIn = Cookies.get('isLoggedIn'); // Vérifiez si l'utilisateur est connecté
   if (!isLoggedIn) {
     navigate('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
     return;

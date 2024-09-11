@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Customers.css';
-import { GlobalContext } from '../GlobalContext'; // Importez le contexte global
+import Cookies from 'js-cookie';
 
 function Customers() {
   const [clients, setClients] = useState([]);
-  const { isLoggedIn } = useContext(GlobalContext); // Accès aux setters globaux
+  const isLoggedIn = Cookies.get('isLoggedIn'); // Vérifiez si l'utilisateur est connecté
   const [showMenu, setShowMenu] = useState(null); // Etat pour gérer le menu contextuel
   const navigate = useNavigate();
   
