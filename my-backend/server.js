@@ -17,11 +17,11 @@ const initializeDatabase = () => {
     // Préparer les déclarations pour créer les tables
     db.run('CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL, name TEXT, surname TEXT, birth_date TEXT, gender TEXT, work TEXT)');
     db.run('CREATE TABLE IF NOT EXISTS Customers (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL, name TEXT, surname TEXT, birth_date TEXT, gender TEXT, description TEXT, astrological_sign TEXT, phone_number TEXT, address TEXT, coach_id INTEGER, FOREIGN KEY (coach_id) REFERENCES Users(id))');
-    db.run('CREATE TABLE IF NOT EXISTS Events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, max_participant INTEGER, location_x INTEGER, location_y INTEGER, type TEXT, employee_id INTEGER, location_name TEXT, FOREIGN KEY (employee_id) REFERENCES Users(id))');
+    db.run('CREATE TABLE IF NOT EXISTS Events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, max_participants INTEGER, location_x INTEGER, location_y INTEGER, type TEXT, employee_id INTEGER, location_name TEXT, FOREIGN KEY (employee_id) REFERENCES Users(id))');
     db.run('CREATE TABLE IF NOT EXISTS Encounters (id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER, date TEXT, rating INTEGER, comment TEXT, source TEXT)');
     db.run('CREATE TABLE IF NOT EXISTS Tips (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, tip TEXT)');
     db.run('CREATE TABLE IF NOT EXISTS Clothes (id INTEGER, type TEXT, customer_id INTEGER, FOREIGN KEY (customer_id) REFERENCES Customers(id))');
-};
+    db.run('CREATE TABLE IF NOT EXISTS Blogs (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, coach_id INTEGER, FOREIGN KEY (coach_id) REFERENCES Users(id))');};
 
 // Initialiser la base de données
 initializeDatabase();
@@ -249,7 +249,7 @@ const eventsExists = (date, location_x, location_y, employee_id, callback) => {
 };
 
 const insertEventIntoDB = (event) => {
-    const { name, date, max_participant, location_x, location_y, type, employee_id, location_name } = event;
+    const { name, date, max_participants, location_x, location_y, type, employee_id, location_name } = event;
 
     eventsExists(date, location_x, location_y, employee_id, (err, row) => {
         if (err) {
@@ -262,8 +262,8 @@ const insertEventIntoDB = (event) => {
         }
 
 
-        const stmt = db.prepare('INSERT INTO Events (name, date, max_participant, location_x, location_y, type, employee_id, location_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-        stmt.run(name, date, max_participant, location_x, location_y, type, employee_id, location_name, function(err) {
+        const stmt = db.prepare('INSERT INTO Events (name, date, max_participants, location_x, location_y, type, employee_id, location_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+        stmt.run(name, date, max_participants, location_x, location_y, type, employee_id, location_name, function(err) {
             if (err) {
                 console.error(`Erreur lors de l'insertion de l'event:`, err.message);
             }
@@ -836,19 +836,19 @@ app.get('/api/customersByCoach/:id', (req, res) => {
 });
 
 app.put('/api/customersEdit/:id', async (req, res) => {
-    const customerId = req.params.id;
-    const customerData = req.body; // Contient les informations du client
-  
-    try {
-      // Mise à jour du client dans la base de données
-      await db.query('UPDATE customers SET ? WHERE id = ?', [customerData, customerId]);
-      res.status(200).send({ message: 'Client mis à jour avec succès' });
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du client', error);
-      res.status(500).send({ message: 'Erreur serveur' });
-    }
-  });
-  
+  const customerId = req.params.id;
+  const customerData = req.body; // Contient les informations du client
+
+  try {
+    // Mise à jour du client dans la base de données
+    await db.query('UPDATE customers SET ? WHERE id = ?', [customerData, customerId]);
+    res.status(200).send({ message: 'Client mis à jour avec succès' });
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du client', error);
+    res.status(500).send({ message: 'Erreur serveur' });
+  }
+});
+
 
 // Delete customer || DELETE METHOD
 app.delete('/api/deleteCustomer/:id', (req, res) => {
@@ -871,6 +871,34 @@ app.delete('/api/deleteUser/:id', (req, res) => {
         if (err) {
             console.error("Erreur lors de la suppression de l'utilisateur:", err);
             return res.status(500).send("Erreur lors de la suppression de l'utilisateur");
+        }
+        res.status(200).send({ id: this.lastID });
+    });
+});
+
+//Get all blogs || GET METHOD
+app.get('/api/blogs', (req, res) => {
+    db.all('SELECT * FROM Blogs', (err, rows) => {
+        if (err) {
+            res.status(400).json({"error": err.message});
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": rows
+        });
+    });
+});
+
+// Update blog
+app.post('/api/addBlogs', (req, res) => {
+    const { title, content, coach_id } = req.body;
+
+    const stmt = db.prepare('INSERT INTO Blogs (title, content, coach_id) VALUES (?, ?, ?)');
+    stmt.run(title, content, coach_id, function(err) {
+        if (err) {
+            console.error("Erreur lors de l'ajout du blog:", err);
+            return res.status(500).send("Erreur lors de l'ajout du blog");
         }
         res.status(200).send({ id: this.lastID });
     });
