@@ -52,6 +52,22 @@ function Blogs() {
     return coach ? coach.surname : 'Unknown Coach';
   };
 
+  const handleDeleteBlog = async (blogId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/deleteBlog/${blogId}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setBlogs(blogs.filter(blog => blog.id !== blogId));
+      } else {
+        alert('Failed to delete customer' + `${blogId}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while deleting the customer');
+    }
+  };
+
   return (
     <div className="tips-container">
       <h1 className="title">Blogs for Coaches</h1>
@@ -75,6 +91,7 @@ function Blogs() {
               onClick={() => toggleDropdown(index)}
             >
               <span className="tip-title">{blog.title}</span>
+              <p onClick={() => handleDeleteBlog(blog.id)} style={{ color: 'red' }}>Delete</p>
               <div className='published'>Published by {getCoachName(blog.coach_id)} {getCoachSurname(blog.coach_id)}</div>
               <img
                 src={openIndex === index ? arrowUp : arrowDown}

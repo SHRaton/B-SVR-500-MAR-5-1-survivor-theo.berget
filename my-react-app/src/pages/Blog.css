@@ -6,3 +6,7 @@
 .published {
   font-weight: bold;
 }
+
+.tip-header p {
+  margin-right: 30px;
+}
